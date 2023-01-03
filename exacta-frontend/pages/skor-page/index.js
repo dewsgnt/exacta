@@ -19,10 +19,10 @@ const Skor = () => {
               <div className="flex flex-row items-center">
                   <thead>
                     <tr className="">
-                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-r-2">Username</th>
-                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-r-2">Nama Sekolah</th>
-                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-r-2 ">Nilai</th>
-                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw]">Waktu</th>
+                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-y-2 border-x-2">Nama</th>
+                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-y-2 border-r-2">Nama Sekolah</th>
+                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-y-2 border-r-2 ">Nilai</th>
+                      <th className="font-normal text-2xl py-[0.7vh] px-[3vw] border-y-2 border-r-2">Waktu</th>
                     </tr>
                   </thead>
                   <tbody>
