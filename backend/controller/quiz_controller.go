@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"strconv"
+	"fmt"
 
 	"exacta/backend/model/domain"
 	"exacta/backend/model/web"	
@@ -71,6 +72,91 @@ func (api *API) GetQuizByCategoryIdWithPagination(c *gin.Context) {
 	})
 }	
 
+func (api *API) SubmitAnswersAttempts(c *gin.Context) {
+	token, err := c.Request.Cookie("token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			c.JSON(http.StatusUnauthorized, gin.H{"Error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	tokenString := token.Value
+	fmt.Println("tokenString", tokenString)
+
+	userId, err := api.usersRepo.GetUserIDByToken(tokenString)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+	}
+	fmt.Println("userId", userId)
+	
+	var answerAttemptReq web.AnswerAttemptRequest
+
+	if err := c.ShouldBindJSON(&answerAttemptReq); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	fmt.Println("answerAttemptReq", answerAttemptReq)
+
+
+	err = answerAttemptReq.ValidateAnswerAttempt()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	var answersAttempt []domain.AnswerAttemptDomain
+
+	for _, answer := range answerAttemptReq.Answers {
+		answersAttempt = append(answersAttempt, domain.AnswerAttemptDomain{
+			UserId: userId, QuizId: answer.QuizId, Answer: answer.Answer,
+		})
+	}
+
+	_, err = api.quizRepo.SaveAnswerAttempt(userId, answersAttempt)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	fmt.Println("bisa saveanswers")
+
+	_, err = api.quizRepo.SaveResult(
+		answerAttemptReq.Duration, userId, answerAttemptReq.CategoryId,
+	)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	fmt.Println("bisa saveresult")
+
+
+	result, err := api.quizRepo.FindResultByCategoryId(answerAttemptReq.CategoryId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	resultResp := convertToAnswersAttemptResponse(result)
+
+
+	c.JSON(http.StatusOK, web.WebResponse{
+		Code:    http.StatusOK,
+		Message: "Success",
+		Data:    resultResp,
+	})
+}	
+
 func convertToCategorieResponse(c domain.CategoryDomain) web.CategoryResponse {
 	return web.CategoryResponse{
 		Id 			: c.Id,
@@ -97,4 +183,12 @@ func convertToQuizResponses(questions []domain.QuizDomain, incorrectAnswer domai
 	}
 
 	return questionResponses
+}
+
+func convertToAnswersAttemptResponse(result domain.ResultDomain) web.AnswerAttemptResponse {
+	return web.AnswerAttemptResponse{
+		Correct:  result.Correct,
+		Wrong:    result.Wrong,
+		Duration: result.Duration,
+	}
 }

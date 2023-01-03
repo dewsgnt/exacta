@@ -72,7 +72,7 @@ func (api *API) PostUserRegist(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status code": http.StatusOK,
-		"message":     "Welcome, Success registered!",
+		"message":     "registered!",
 	})
 
 }
@@ -156,7 +156,7 @@ func (api *API) LoginUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status code:": http.StatusOK,
-		"message":      "login successful",
+		"message":      "success",
 		"data: ": LoginResponse{
 			Email:     *res,
 			Token:     *tknToDb,
