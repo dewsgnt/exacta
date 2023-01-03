@@ -1,6 +1,6 @@
 // API URL BACKEND
 const API = {
-  API_URL: "https://edumar-backend.herokuapp.com",
+  API_URL: "192.168.1.137",
 };
 
 export default API;
