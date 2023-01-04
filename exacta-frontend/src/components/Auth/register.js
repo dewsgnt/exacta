@@ -42,7 +42,7 @@ const Register = () => {
       }
     } catch (error) {
       alert(
-        "Username / Email Sudah terdaftar, Silahkan Periksa Data Anda Kembali!"
+        "Username / Email Sudah terdaftar, Silahkan Periksa Data Kembali!"
       );
     }
   };

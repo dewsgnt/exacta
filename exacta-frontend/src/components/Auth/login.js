@@ -28,14 +28,15 @@ const Login = () => {
 
             // setEmail("");
             // setPassword("");
+            console.log("code"+ res.statusCode)
 
             if (res.statusCode == 200) {
                 //navigate("/");
                 router.push('/')
               }
-        } catch (err) {
-            alert("Yah, daftar dulu yuk!")
-            router.push('/register-page')
+        } catch (error) {
+            router.push('/login-page')
+            alert("Email atau Password salah")
         }
     }
     
