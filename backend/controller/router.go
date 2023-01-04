@@ -6,7 +6,7 @@ import(
 	"fmt"
 	"net/http"
 
-	_"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/cors"
 
 )
 
@@ -24,7 +24,7 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 		quizRepo,
 		gin,
 	}
-	//gin.Use(cors.Default())
+	gin.Use(cors.Default())
 	v1 := gin.Group("/api/v1")
 
 	//users
@@ -36,6 +36,7 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 	v1.GET("/home/categories", api.GET(api.AuthMiddleware(api.GetCategories)))
 	v1.GET("home/quizzes", api.GET(api.GetQuizByCategoryIdWithPagination))
 	v1.POST("home/submitanswer", api.POST(api.SubmitAnswersAttempts))
+	v1.GET("home/score-boards", api.GET(api.GetScoresBoardByCategoryId))
 
 	return api
 }

@@ -161,6 +161,51 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	})
 }
 
+func (api *API) GetScoresBoardByCategoryId(c *gin.Context) {
+	categoryId, _ := strconv.Atoi(c.Query("category_id"))
+
+	usersResp,err := api.usersRepo.FetchUsers()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, web.WebResponse{
+			Code:    http.StatusInternalServerError,
+			Message: http.StatusText(http.StatusInternalServerError),
+			Data:    err.Error(),
+		})
+		return
+	}
+	var users []domain.UserDomain
+	for _, userResp := range usersResp{
+		user, err := api.usersRepo.FetchUserByID(userResp.Id)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, web.WebResponse{
+				Code:    http.StatusInternalServerError,
+				Message: http.StatusText(http.StatusInternalServerError),
+				Data:    err.Error(),
+			})
+			return
+		}
+
+		users = append(users, user)
+	}
+	
+	scoreBoardResponse, err := api.quizRepo.FindScoresBoardByCategoryId(uint(categoryId))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, web.WebResponse{
+			Code:    http.StatusInternalServerError,
+			Message: http.StatusText(http.StatusInternalServerError),
+			Data:    err.Error(),
+		})
+		return
+	}
+	scoresBoard := convertToScoreBoardResponses(users, scoreBoardResponse)
+
+	c.JSON(http.StatusOK, web.WebResponse{
+		Code:    http.StatusOK,
+		Message: "Success",
+		Data:    scoresBoard,
+	})
+}	
+
 
 
 func convertToCategorieResponse(c domain.CategoryDomain) web.CategoryResponse {
@@ -197,4 +242,25 @@ func convertToAnswersAttemptResponse(result domain.ResultDomain) web.AnswerAttem
 		Wrong:    result.Wrong,
 		Duration: result.Duration,
 	}
+}
+
+func convertToScoreBoardResponses(users []domain.UserDomain, scoresBoard []domain.ResultDomain) []web.ScoreBoardResponse {
+	var scoreBoardResponses []web.ScoreBoardResponse
+
+	for _, scoreBoard := range scoresBoard {
+		var username string
+		for _, user := range users {
+			if user.Id == scoreBoard.UserId {
+				username = user.Username
+			}
+		}
+
+		scoreBoardResponses = append(scoreBoardResponses, web.ScoreBoardResponse{
+			Username: username,
+			Score:    scoreBoard.Correct * 10,
+			Duration: scoreBoard.Duration,
+		})
+	}
+
+	return scoreBoardResponses
 }

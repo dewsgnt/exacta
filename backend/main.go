@@ -1,6 +1,7 @@
 package main
 import(
 	"database/sql"
+	"exacta/backend/database/seed"
 	"exacta/backend/repository"
 	"exacta/backend/controller"
 
@@ -14,6 +15,7 @@ func main(){
 	if err != nil {
 		panic(err)
 	}
+	seed.Seed(db)
 	
 	usersRepo := repository.NewUserRepository(db)
 	quizRepo := repository.NewQuizRepository(db)

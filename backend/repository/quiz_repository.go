@@ -171,10 +171,52 @@ func (q *QuizRepositoryImpl) FindResultByCategoryId(categoryId uint) (domain.Res
 		&result.Duration,
 		&result.UserId, 
 		&result.CategoryId,
+		&result.CreatedAt, 
+		&result.UpdatedAt,
 	)
 	if err != nil {
 		return result, err
 	}
 
 	return result, nil
+}
+
+func (q *QuizRepositoryImpl) FindScoresBoardByCategoryId(categoryId uint) ([]domain.ResultDomain, error) {
+	query := `SELECT * FROM results WHERE category_id = ?;`
+
+	rows, err := q.db.Query(query, categoryId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []domain.ResultDomain
+	for rows.Next() {
+		var result domain.ResultDomain
+		err := rows.Scan(
+			&result.Id, 
+			&result.Correct, 
+			&result.Wrong, 
+			&result.Duration, 
+			&result.UserId,
+			&result.CategoryId, 
+			&result.CreatedAt, 
+			&result.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		results = append(results, result)
+	}
+
+	if closeErr := rows.Close(); closeErr != nil {
+		return nil, closeErr
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }

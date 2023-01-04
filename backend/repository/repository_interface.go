@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository interface{
-	FetchUserByID(id int) (domain.UserDomain, error)
+	FetchUserByID(id uint) (domain.UserDomain, error)
 	FetchUsers() ([]domain.UserDomain, error)
 	InsertUser(username string, email string, password string, nama_sekolah string) (*string, error)
 	LoginUser(email string, password string) (*string, error)
