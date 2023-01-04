@@ -46,7 +46,7 @@ const Register = () => {
           },
         }
       );
-      console.log("code"+ res.statusCode)
+      console.log("code"+res.statusCode)
       if (res.statusCode == 200) {
         //navigate("/");
         alert(
