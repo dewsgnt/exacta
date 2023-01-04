@@ -1,38 +1,24 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {SyntheticEvent, useEffect, useState} from "react";
+// import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useRouter } from "next/router";
 import API from "../api/Api";
+import Cookies from 'js-cookie';
 
 const Register = () => {
-  const [username, setUsername] = React.useState("");
-  const [namasekolah, setNamaSekolah] = React.useState("")
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const router = useRouter()
 
+  const [username, setUsername] = useState("");
+  const [namasekolah, setNamaSekolah] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  // const submit = async (e) => {
-  //   e.preventDefault();
-    
-  //   const response = await fetch('http://localhost:8080/api/v1/users/regist', {
-  //     method: 'POST',
-  //     headers: {'Content-type': 'aplication/json'},
-  //     body: JSON.stringify({
-  //       username,
-  //       namasekolah,
-  //       email,
-  //       password
-  //     })
-  //   })
-
-  //   const content = await response.json()
-
-  //   console.log(content);
-  // }
   const submit = async (e) => {
     e.preventDefault();
+
     try {
       let { data: res } = await axios.post(
-        `${API.API_URL}/api/v1/users/regist`,
+        `http://localhost:8080/api/v1/users/regist`,
         {
           username: username,
           email: email,
@@ -49,8 +35,9 @@ const Register = () => {
       console.log("code"+res.statusCode)
       if (res.statusCode == 200) {
         //navigate("/");
+        router.push('/login-page')
         alert(
-          "berhasill"
+          "Yey berhasil daftar, silahkan masuk"
         );
       }
     } catch (error) {
@@ -58,7 +45,7 @@ const Register = () => {
         "Username / Email Sudah terdaftar, Silahkan Periksa Data Anda Kembali!"
       );
     }
-  }
+  };
 
   return (
 
