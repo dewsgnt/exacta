@@ -27,31 +27,7 @@ const Register = () => {
   //   const content = await response.json()
 
   //   console.log(content);
-
-    // try {
-    //   let { data: res } = await axios.post(
-    //     `${API.API_URL}/api/auth/register`,
-    //     {
-    //       username: username,
-    //       email: email,
-    //       password: password,
-    //     },
-    //     {
-    //       headers: {
-    //         Accept: "/",
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   );
-    //   if (res.code === 200) {
-    //     navigate("/");
-    //   }
-    // } catch (error) {
-    //   alert(
-    //     "Username / Email Sudah terdaftar, Silahkan Periksa Data Anda Kembali!"
-    //   );
-    // }
-  // };
+  // }
   const submit = async (e) => {
     e.preventDefault();
     try {
@@ -61,6 +37,7 @@ const Register = () => {
           username: username,
           email: email,
           password: password,
+          namasekolah: namasekolah,
         },
         {
           headers: {
@@ -69,8 +46,12 @@ const Register = () => {
           },
         }
       );
-      if (res.code === 200) {
-        navigate("/");
+      console.log("code"+ res.statusCode)
+      if (res.statusCode == 200) {
+        //navigate("/");
+        alert(
+          "berhasill"
+        );
       }
     } catch (error) {
       alert(

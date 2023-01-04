@@ -45,7 +45,7 @@ type Claims struct {
 }
 
 func (api *API) PostUserRegist(c *gin.Context) {
-	//go api.AllowOrigin(c)
+	 go api.AllowOrigin(c)
 	var user web.RegisterRequest
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -71,14 +71,14 @@ func (api *API) PostUserRegist(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status code": http.StatusOK,
+		"statusCode": http.StatusOK,
 		"message":     "registered!",
 	})
 
 }
 
 func (api *API) LoginUser(c *gin.Context) {
-	//go api.AllowOrigin(c)
+	// go api.AllowOrigin(c)
 	var user User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -166,7 +166,7 @@ func (api *API) LoginUser(c *gin.Context) {
 }
 
 func (api *API) LogoutUser(c *gin.Context) {
-	go api.AllowOrigin(c)
+	// go api.AllowOrigin(c)
 	token, err := c.Request.Cookie("token")
 	if err != nil {
 		if err == http.ErrNoCookie {

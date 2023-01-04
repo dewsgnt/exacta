@@ -6,6 +6,8 @@ import(
 	"fmt"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
+
 )
 
 type API struct{
@@ -22,7 +24,7 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 		quizRepo,
 		gin,
 	}
-
+	gin.Use(cors.Default())
 	v1 := gin.Group("/api/v1")
 
 	//users
