@@ -1,3 +1,20 @@
+// import React from 'react'
+// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+// import Link from "next/link";
+// import Home from "../pages/home-page"
+// import Login from "../pages/login-page"
+// import Regist from "../pages/register-page"
+
+// function App() {
+//   return (
+//     <Router>
+//         <Route path='/' element={Home}/>
+//     </Router>
+//   )
+// }
+
+// export default App
+
 import { useRouter } from "next/router";
 import Image from "next/image"
 
