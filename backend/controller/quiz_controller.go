@@ -94,8 +94,10 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	var answerAttemptReq web.AnswerAttemptRequest
 
 	if err := c.ShouldBindJSON(&answerAttemptReq); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, web.WebResponse{
+			Code:    http.StatusBadRequest,
+			Message: http.StatusText(http.StatusBadRequest),
+			Data:    err.Error(),
 		})
 		return
 	}
@@ -104,10 +106,14 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 
 	err = answerAttemptReq.ValidateAnswerAttempt()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
+		if err != nil {
+			c.JSON(http.StatusBadRequest, web.WebResponse{
+				Code:    http.StatusUnprocessableEntity,
+				Message: http.StatusText(http.StatusUnprocessableEntity),
+				Data:    err.Error(),
+			})
+			return
+		}
 	}
 
 	var answersAttempt []domain.AnswerAttemptDomain
@@ -125,7 +131,6 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("bisa saveanswers")
 
 	_, err = api.quizRepo.SaveResult(
 		answerAttemptReq.Duration, userId, answerAttemptReq.CategoryId,
@@ -136,7 +141,6 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("bisa saveresult")
 
 
 	result, err := api.quizRepo.FindResultByCategoryId(answerAttemptReq.CategoryId)
@@ -155,7 +159,9 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 		Message: "Success",
 		Data:    resultResp,
 	})
-}	
+}
+
+
 
 func convertToCategorieResponse(c domain.CategoryDomain) web.CategoryResponse {
 	return web.CategoryResponse{

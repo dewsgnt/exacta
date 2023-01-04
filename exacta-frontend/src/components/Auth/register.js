@@ -3,7 +3,7 @@ import React, {SyntheticEvent, useEffect, useState} from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import API from "../api/Api";
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 
 const Register = () => {
   const router = useRouter()
@@ -23,7 +23,7 @@ const Register = () => {
           username: username,
           email: email,
           password: password,
-          namasekolah: namasekolah,
+          nama_sekolah: namasekolah,
         },
         {
           headers: {
