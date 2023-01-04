@@ -149,3 +149,17 @@ func (u *UserRepositoryImpl) DeleteToken(token string) (bool, error) {
 	}
 	return true, err
 }
+
+func (u *UserRepositoryImpl) GetUserIDByToken(token string) (uint, error) {
+	var user_id uint
+
+	sqlStatement := `SELECT user_id FROM auth WHERE token = ?`
+
+	row := u.db.QueryRow(sqlStatement, token)
+	err := row.Scan(&user_id)
+	if err != nil {
+		return user_id, err
+	}
+	return user_id, nil
+
+}

@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useEffect, useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useRouter } from "next/router";
 import API from "../api/Api";
@@ -13,8 +13,6 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate(); 
-
   const submit = async (e) => {
     e.preventDefault();
 
@@ -25,6 +23,7 @@ const Register = () => {
           username: username,
           email: email,
           password: password,
+          namasekolah: namasekolah,
         },
         {
           headers: {
@@ -33,8 +32,13 @@ const Register = () => {
           },
         }
       );
-      if (res.code === 200) {
-        router.push('/');
+      console.log("code"+ res.statusCode)
+      if (res.statusCode == 200) {
+        //navigate("/");
+        router.push('/login-page')
+        alert(
+          "Yey berhasil daftar, silahkan masuk"
+        );
       }
     } catch (error) {
       alert(
