@@ -69,11 +69,6 @@ func main(){
 		FOREIGN KEY (user_id) REFERENCES users(user_id)
 
 	);
-
-	INSERT INTO categories (name, description) VALUES 
-	('Bilangan Bulat', '' ),
-	('Statistika', ''),
-	('FPB dan KPK', '');
 	`)
 	if err != nil {
 		panic(err)

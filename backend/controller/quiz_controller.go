@@ -35,6 +35,7 @@ func (api *API) GetCategories(c *gin.Context) {
 }
 
 func (api *API) GetQuizByCategoryIdWithPagination(c *gin.Context) {
+	go api.AllowOrigin(c)
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	limit, _:= strconv.Atoi(c.Query("limit"))
@@ -73,6 +74,7 @@ func (api *API) GetQuizByCategoryIdWithPagination(c *gin.Context) {
 }	
 
 func (api *API) SubmitAnswersAttempts(c *gin.Context) {
+	go api.AllowOrigin(c)
 	token, err := c.Request.Cookie("token")
 	if err != nil {
 		if err == http.ErrNoCookie {
@@ -162,6 +164,7 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 }
 
 func (api *API) GetScoresBoardByCategoryId(c *gin.Context) {
+	go api.AllowOrigin(c)
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 
 	usersResp,err := api.usersRepo.FetchUsers()
