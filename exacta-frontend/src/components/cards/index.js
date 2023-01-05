@@ -1,136 +1,158 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import { useRouter } from "next/router";
-
+import ImageComponent from "../Image";
+import ellipse1 from '../../assets/images/math.png'
+import { ChevronRightIcon } from '@heroicons/react/solid'
 
 const Cards = () => {
-  const [categories, setCategories] = useState([]);
-  // const navigate = useNavigate();
-  const router = useRouter();
+    const router = useRouter()
+    const [categories, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
+      try {
+        // let auth = localStorage.getItem("token");
+         let { data: resp } = await axios.get(
+          `http://localhost:8080/api/v1/home/categories`,
+          {
+            headers: {
+              Accept: "/",
+              "Content-Type": "application/json",
+              // Authorization: `Bearer ${auth}`
+              // Authorization: "Bearer " + auth,
+            }, 
+            // withCredentials: true  
+          });
+
   
-  const fetchCategories = async () => {
-    try {
-      let auth = localStorage.getItem("token");
-      // XMLHttpRequest.setRequestHeader("Access-Control-Allow-Origin", "*");
-      let { data: resp } = await axios.get(
-        `http://localhost:8080/api/v1/home/categories`,
-        {
-          headers: {
-            Accept: "/",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + auth,
-          },
-          // withCredentials: true,
-        }
-      );
+        setCategories(resp.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    useEffect(() => {
+      fetchCategories();
+    }, []);
+  
+  const handleClick = (id) => {
+    id = categories[0]?.id
+    router.push({ 
+      pathname: `/question-page`,
+      query: { category_id: id, page: 1, limit: 1},
+   });
+  }
 
-      setCategories(resp.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const handleClick1 = (id) => {
+    id = categories[1]?.id
+    router.push({ 
+      pathname: `/question-page`,
+      query: { category_id: id, page: 1, limit: 1},
+   });
+   }
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const handleClick = (e) => {
-    router.push({
-      pathname: "/quizzes",
-      search: `?category_id=${e}&page=1`,
-    });
-  };
-
+   const handleClick2 = (id) => {
+    id = categories[2]?.id
+    router.push({ 
+      pathname: `/question-page`,
+      query: { category_id: id, page: 1, limit: 1},
+   });
+   }
+  
   return (
     <>
-      <section className="about topMarign" id="card">
-        <div className="heading">
-          <div className="cards">
-            <center>
-              <h1>Choose a Course!</h1>{" "}
-            </center>
-            <div className="container flex d-flex gap-4 mt-5">
+    <section className="flex flex-col items-center justify-center h-[100vh] bg-[#EDEFFB]">
+        <h1 className="text-text_main text-5xl pb-[8vh]">KUIS</h1>
+        <div className="flex flex-row">
+          <div className="flex flex-row">
+            <div className="container flex d-flex gap-4 mt-5 mr-3 text-black">
               <Card
-                style={{ width: "18rem" }}
-                className="border-0  bg-transparent"
+                className="flex h-[60vh] w-[25vw] flex bg-white rounded-2xl"
               >
-                <Card.Body className="card-body1">
-                  {/* <center>
-                    <img className="card-img1" src="./assets/vocab.png" />
-                  </center> */}
-                  <Card.Title style={{ color: "black" }}>
-                    <center>{categories[0]?.name}</center>
+                <Card.Body className="flex flex-col justify-center items-center p-[2vw] m-[1vw] tablet:w-[100%] mobile:w-[80%]">
+                  <center>
+                  <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/>
+                  </center>
+                  <Card.Title 
+                  style={{ color: "black" }} 
+                  className='tablet:text-3xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile text-start'>
+                    <center className="text-black">{categories[0]?.name}</center>
                   </Card.Title>
-                  <Card.Text style={{ color: "black", textAlign: "justify" }}>
+                  {/* <Card.Text style={{ color: "white", textAlign: "justify" }}>
                     {categories[0]?.description}
-                  </Card.Text>
+                  </Card.Text> */}
                   <center>
                     <button
-                      className="start1"
-                      onClick={(e) => handleClick(e.target.value)}
-                      value={categories[0]?.id}
+                    onClick={(e) => handleClick(e.target.value)}
+                    value={categories[0]?.id}
                     >
-                      Start
+                    <ChevronRightIcon className="h-[5vh] w-[7vw] m-0 bg-button_main rounded-xl text-white"/>
                     </button>
                   </center>
                 </Card.Body>
               </Card>
+            </div>
 
+            <div className="container flex d-flex gap-4 mt-5 mr-3 text-black">
               <Card
-                style={{ width: "18rem" }}
-                className="border-0 bg-transparent"
+                className="flex h-[60vh] w-[25vw] flex bg-white rounded-2xl"
               >
-                <Card.Body className="card-body2">
-                  {/* <center>
-                    <img className="card-img2" src="./assets/grammar.png" />
-                  </center> */}
-                  <Card.Title style={{ color: "black" }}>
+                <Card.Body className="flex flex-col justify-center items-center p-[2vw] m-[1vw] tablet:w-[100%] mobile:w-[80%]">
+                  <center>
+                  <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/>
+                  </center>
+                  <Card.Title 
+                  style={{ color: "black" }} 
+                  className='tablet:text-3xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile text-start'>
                     <center>{categories[1]?.name}</center>
                   </Card.Title>
-                  <Card.Text style={{ color: "black", textAlign: "justify" }}>
+                  {/* <Card.Text style={{ color: "white", textAlign: "justify" }}>
                     {categories[1]?.description}
-                  </Card.Text>
+                  </Card.Text> */}
                   <center>
                     <button
-                      className="start2"
-                      onClick={(e) => handleClick(e.target.value)}
-                      value={categories[1]?.id}
+                    onClick={(e) => handleClick1(e.target.value)}
+                    value={categories[1]?.id}
                     >
-                      Start
+                    <ChevronRightIcon className="h-[5vh] w-[7vw] m-0 bg-button_main rounded-xl text-white"/>
                     </button>
                   </center>
                 </Card.Body>
               </Card>
+            </div>
 
+            <div className="container flex d-flex gap-4 mt-5 mr-3 text-black">
               <Card
-                style={{ width: "18rem" }}
-                className="border-0  bg-transparent"
+                className="flex h-[60vh] w-[25vw] flex bg-white rounded-2xl"
               >
-                <Card.Body className="card-body3">
-                  {/* <center>
-                    <img className="card-img3" src="./assets/tenses.png" />
-                  </center> */}
-                  <Card.Title style={{ color: "black" }}>
+                <Card.Body className="flex flex-col justify-center items-center p-[2vw] m-[1vw] tablet:w-[100%] mobile:w-[80%]">
+                  <center>
+                  <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/>
+                  </center>
+                  <Card.Title 
+                  style={{ color: "black" }} 
+                  className='tablet:text-3xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile text-start'>
                     <center>{categories[2]?.name}</center>
                   </Card.Title>
-                  <Card.Text style={{ color: "black", textAlign: "justify" }}>
+                  {/* <Card.Text style={{ color: "white", textAlign: "justify" }}>
                     {categories[2]?.description}
-                  </Card.Text>
+                  </Card.Text> */}
                   <center>
                     <button
-                      className="start3"
-                      onClick={(e) => handleClick(e.target.value)}
-                      value={categories[2]?.id}
+                    onClick={(e) => handleClick2(e.target.value)}
+                    value={categories[2]?.id}
                     >
-                      Start
+                    <ChevronRightIcon className="h-[5vh] w-[7vw] m-0 bg-button_main rounded-xl text-white"/>
                     </button>
                   </center>
                 </Card.Body>
               </Card>
             </div>
           </div>
+
+         
         </div>
       </section>
 
