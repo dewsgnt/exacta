@@ -1,20 +1,3 @@
-// import React from 'react'
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-// import Link from "next/link";
-// import Home from "../pages/home-page"
-// import Login from "../pages/login-page"
-// import Regist from "../pages/register-page"
-
-// function App() {
-//   return (
-//     <Router>
-//         <Route path='/' element={Home}/>
-//     </Router>
-//   )
-// }
-
-// export default App
-
 import { useRouter } from "next/router";
 import Image from "next/image"
 
@@ -23,6 +6,7 @@ import ImageComponent from '../src/components/Image';
 import Layout from "../src/components/Layout"
 import Button from "../src/components/Button"
 import ellipse from "../src/assets/images/ellipse.svg"
+import Cards from "../src/components/cards";
 
 export default function Home() {
   const router = useRouter();
@@ -42,8 +26,10 @@ export default function Home() {
       <p className="text-text_blue text-xl w-[100%] py-[6vh]">adalah sebuah aplikasi berbasis web sebagai tempat untuk belajar matematika yang diperuntukkan kepada pelajar kelas 6 SD ataupun sederajat dengan tampilan yang menarik dan papan score yang bisa menstimulasi jiwa kompetisi anak.</p> </div>
       </section>
 
+      <Cards/>
+
     {/* Subject */}
-    <section id='course' className="flex flex-col items-center justify-center h-[100vh] bg-[#EDEFFB]">
+    {/* <section id='course' className="flex flex-col items-center justify-center h-[100vh] bg-[#EDEFFB]">
     <h1 className="text-text_main text-5xl pb-[8vh]">KUIS</h1>
         <div className="flex flex-row">
           <Card
@@ -59,8 +45,8 @@ export default function Home() {
             onClick={() => router.push('/question-page')}
           />
         </div>
-        
-      </section>
+        <Cards/>
+      </section> */}
       
     </Layout>
   )
