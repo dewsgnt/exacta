@@ -16,9 +16,9 @@ func NewUserRepository(db *sql.DB) *UserRepositoryImpl {
 	}
 }
 
-func (u *UserRepositoryImpl) FetchUserByID(id int) (domain.UserDomain, error) {
+func (u *UserRepositoryImpl) FetchUserByID(id uint) (domain.UserDomain, error) {
 	user := domain.UserDomain{}
-	sqlStatement := `SELECT * FROM users WHERE user_id = ?`
+	sqlStatement := `SELECT id, username, email, nama_sekolah FROM users WHERE id = ?`
 
 	row := u.db.QueryRow(sqlStatement, id)
 	err := row.Scan(

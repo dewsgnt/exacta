@@ -173,6 +173,7 @@ const Question = () => {
     }
   };
 
+
     return (
         <section id='question' className="flex flex-col items-center h-[100vh] bg-[#EDEFFB]">
             <div>

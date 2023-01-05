@@ -1,10 +1,10 @@
 package controller
 import (
-	_"context"
+	"context"
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	_"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v4"
 
 )
 
@@ -25,55 +25,54 @@ func (h *API) AllowOrigin(c *gin.Context) {
 	c.Next()
 }
 
-// func (m *API) AuthMiddleware(next gin.HandlerFunc) gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		m.AllowOrigin(c)
+func (m *API) AuthMiddleware(next gin.HandlerFunc) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		m.AllowOrigin(c)
 
-// 		token, err := c.Request.Cookie("token")
-// 		if err != nil {
-// 			if err == http.ErrNoCookie {
-// 				// If no cookie is present, return unauthorized
-// 				c.JSON(http.StatusUnauthorized, gin.H{"Error4": err.Error()})
-// 				return
-// 			}
-// 			//no token field, return bad request
-// 			c.JSON(http.StatusBadRequest, gin.H{"Error5": err.Error()})
-// 			return
-// 		}
+		token, err := c.Request.Cookie("token")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				// If no cookie is present, return unauthorized
+				c.JSON(http.StatusUnauthorized, gin.H{"Error4": err.Error()})
+				return
+			}
+			//no token field, return bad request
+			c.JSON(http.StatusBadRequest, gin.H{"Error5": err.Error()})
+			return
+		}
 
-// 		tokenString := token.Value
+		tokenString := token.Value
 
-// 		claims := &Claims{}
+		claims := &Claims{}
 
-// 		// Parse the JWT string and store the result in `claims`.
-// 		tkn, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-// 			return jwtKey, nil
-// 		})
+		// Parse the JWT string and store the result in `claims`.
+		tkn, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+			return jwtKey, nil
+		})
 
-// 		if err != nil {
-// 			if err == jwt.ErrSignatureInvalid {
-// 				//signature invalid
-// 				c.JSON(http.StatusUnauthorized, gin.H{"Error1": err.Error()})
-// 				return
-// 			}
-// 			c.JSON(http.StatusBadRequest, gin.H{"Error2": err.Error()})
-// 			return
-// 		}
+		if err != nil {
+			if err == jwt.ErrSignatureInvalid {
+				//signature invalid
+				c.JSON(http.StatusUnauthorized, gin.H{"Error1": err.Error()})
+				return
+			}
+			c.JSON(http.StatusBadRequest, gin.H{"Error2": err.Error()})
+			return
+		}
 
-// 		if !tkn.Valid {
-// 			c.JSON(http.StatusUnauthorized, gin.H{"Error3": err.Error()})
-// 			c.Abort()
-// 			return
-// 		}
-// 		ctx := context.WithValue(c.Request.Context(), "email", claims.Email)
-// 		ctx = context.WithValue(ctx, "role", claims.Role)
-// 		ctx = context.WithValue(ctx, "props", claims)
-// 		c.Request = c.Request.WithContext(ctx)
+		if !tkn.Valid {
+			c.JSON(http.StatusUnauthorized, gin.H{"Error3": err.Error()})
+			c.Abort()
+			return
+		}
+		ctx := context.WithValue(c.Request.Context(), "email", claims.Email)
+		ctx = context.WithValue(ctx, "props", claims)
+		c.Request = c.Request.WithContext(ctx)
 
-// 		next(c)
+		next(c)
 
-// 	}
-// }
+	}
+}
 func (api *API) GET(next gin.HandlerFunc) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
 		api.AllowOrigin(ctx)

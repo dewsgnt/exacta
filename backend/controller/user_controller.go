@@ -45,7 +45,7 @@ type Claims struct {
 }
 
 func (api *API) PostUserRegist(c *gin.Context) {
-	 go api.AllowOrigin(c)
+	 //go api.AllowOrigin(c)
 	var user web.RegisterRequest
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -60,6 +60,17 @@ func (api *API) PostUserRegist(c *gin.Context) {
 		return
 
 	}
+
+	err := user.ValidateRegister()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, web.WebResponse{
+			Code:    http.StatusUnprocessableEntity,
+			Message: http.StatusText(http.StatusUnprocessableEntity),
+			Data:    err.Error(),
+		})
+		return
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 8)
 
 	res, err := api.usersRepo.InsertUser(user.Username, user.Email, string(hashedPassword), user.NamaSekolah)
@@ -78,11 +89,21 @@ func (api *API) PostUserRegist(c *gin.Context) {
 }
 
 func (api *API) LoginUser(c *gin.Context) {
-	// go api.AllowOrigin(c)
-	var user User
+	//go api.AllowOrigin(c)
+	var user web.LoginRequest
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
+		})
+		return
+	}
+
+	err := user.ValidateLogin()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, web.WebResponse{
+			Code:    http.StatusUnprocessableEntity,
+			Message: http.StatusText(http.StatusUnprocessableEntity),
+			Data:    err.Error(),
 		})
 		return
 	}
@@ -155,7 +176,7 @@ func (api *API) LoginUser(c *gin.Context) {
 	})
 
 	c.JSON(http.StatusOK, gin.H{
-		"status code:": http.StatusOK,
+		"statusCode:": http.StatusOK,
 		"message":      "success",
 		"data: ": LoginResponse{
 			Email:     *res,
@@ -189,7 +210,7 @@ func (api *API) LogoutUser(c *gin.Context) {
 	})
 
 	c.JSON(http.StatusOK, gin.H{
-		"status code:": http.StatusOK,
+		"statusCode:": http.StatusOK,
 		"message":      "logout successful",
 	})
 }
