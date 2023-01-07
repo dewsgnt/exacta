@@ -15,7 +15,6 @@ const Register = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-
     try {
       let { data: res } = await axios.post(
         `http://localhost:8080/api/v1/users/regist`,
@@ -23,7 +22,7 @@ const Register = () => {
           username: username,
           email: email,
           password: password,
-          nama_sekolah: namasekolah,
+          nama_sekolah: namasekolah
         },
         {
           headers: {
@@ -32,20 +31,18 @@ const Register = () => {
           },
         }
       );
-      console.log("code"+res.statusCode)
-      if (res.statusCode == 200) {
-        //navigate("/");
-        router.push('/login-page')
-        alert(
-          "Yey berhasil daftar, silahkan masuk"
-        );
+      console.log("hello" + JSON.stringify(res));
+      console.log(res.statusCode);
+
+      if (res.statusCode === 200) {
+        alert('udah regist ini')
       }
     } catch (error) {
       alert(
-        "Username / Email Sudah terdaftar, Silahkan Periksa Data Kembali!"
-      );
-    }
-  };
+        "Username / Email Sudah terdaftar, Silahkan Periksa Data Anda Kembali!"
+      );
+    }
+  }
 
   return (
 

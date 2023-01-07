@@ -4,7 +4,7 @@ import(
 	"exacta/backend/model/domain"
 	"errors"
 	"time"
-	"fmt"
+	
 )
 
 type UserRepositoryImpl struct{
@@ -82,19 +82,15 @@ func (u *UserRepositoryImpl) InsertUser(username string, email string, password 
 	return &email, err
 }
 
-func (u *UserRepositoryImpl) LoginUser(email string, password string) (*string, error) {
+func (u *UserRepositoryImpl) LoginUser(email string, password string) (*uint, error) {
 	users, err := u.FetchUsers()
-	fmt.Println("isi users", users)
 	if err != nil {
 		return nil, errors.New("login failed")
 	}
 
 	for _, user := range users {
-		fmt.Println("user.password", user.Password)
-		fmt.Println("password", password)
-
 		if user.Email == email && user.Password == password {
-			return &email, nil
+			return &user.Id, nil
 		}
 
 	}
@@ -131,7 +127,7 @@ func (u *UserRepositoryImpl) FetchUserIdByEmail(email string) (*int, error) {
 	return &user_id, nil
 }
 
-func (u *UserRepositoryImpl) PushToken(user_id int, token string, expired_at time.Time) (*string, error) {
+func (u *UserRepositoryImpl) PushToken(user_id uint, token string, expired_at time.Time) (*string, error) {
 	_, err := u.db.Exec("INSERT INTO auth (user_id, token, expired_at) VALUES (?, ?,?)",
 		user_id, token, expired_at)
 

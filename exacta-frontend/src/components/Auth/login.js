@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState, useContext } from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 import AuthContext from "../store/AuthContext";
 import axios from "axios";
 import Link from "next/link";
@@ -11,34 +11,65 @@ const Login = () => {
     const [password, setPassword] = useState("");
 
     const submit = async (e) => {
-        e.preventDefault()
-
-        try {
-            const res = await axios.post(`http://localhost:8080/api/v1/users/login`, JSON.stringify({email, password}),
-            {
-                headers: { 
-                    Accept: "/",
-                    "Content-Type": "application/json"},
-                withCredentials: false,
-            })
-
-            const token = res?.data?.token
-
-            localStorage.setItem("token", token)
-
-            // setEmail("");
-            // setPassword("");
-            console.log("code"+ res.statusCode)
-
-            if (res.statusCode == 200) {
-                //navigate("/");
-                router.push('/')
-              }
-        } catch (error) {
-            router.push('/login-page')
-            alert("Email atau Password salah")
+      e.preventDefault();
+      try {
+        let { data: res } = await axios.post(
+          `http://localhost:8080/api/v1/users/login`,
+          {
+            email: email,
+            password: password,
+          },
+          {
+            headers: {
+              Accept: "/",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        //console.log("hello" + JSON.stringify(res));
+        console.log(res.statusCode)
+        if (res.statusCode === 200) {
+          alert('berhasil cccuuu')
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          router.push("/");
         }
-    }
+      } catch (error) {
+        alert(
+          "Username / Email Sudah terdaftar, Silahkan Periksa Data Anda Kembali!"
+        );
+      }
+    }
+  
+
+    // const submit = async (e) => {
+    //     e.preventDefault()
+
+    //     try {
+    //       console.log("hallo!");
+    //       let { data: res } = await axios.post(
+    //         `http://localhost:8080/api/v1/users/regist`,
+    //         {
+    //           email: email,
+    //           password:password,
+    //         },
+    //         {
+    //           headers: { 
+    //             Accept: "/",
+    //             "Content-Type": "application/json"
+    //           },
+    //         },
+    //         );
+    //         console.log(res.toString());
+    //         localStorage.setItem("token", token)
+    //         // setEmail("");
+    //         // setPassword("");
+    //     } catch (error) {
+    //       console.log(" APAKAH YG JALAN YG INI?");
+    //         //router.push('/login-page')
+    //         alert("Email atau Password salah");
+    //     }
+    // };
     
   return (
     <section className="flex flex-col items-center justify-center text-center h-[100vh] bg-[#EDEFFB]">
@@ -73,7 +104,7 @@ const Login = () => {
                 className="bg-[#EDEFFB] bg-[#EDEFFB] w-64 p-2 mt-[2vh] flex items-center rounded"></input>
               </div>
               {/* <a href="/" className="border-2 border-bg-blue bg-bg_blue rounded-full px-12 py-2 inline-block font-semibold hover:bg-bg_blue hover:text-bg_main mt-[7vh]">Mulai</a> */}
-              <button onClick={() => router.push('/')} className="border-2 border-bg-blue bg-bg_blue rounded-full px-12 py-2 inline-block font-semibold hover:bg-bg_blue hover:text-bg_main mt-[4vh]" type="submit">Mulai</button>
+              <button className="border-2 border-bg-blue bg-bg_blue rounded-full px-12 py-2 inline-block font-semibold hover:bg-bg_blue hover:text-bg_main mt-[4vh]" type="submit">Mulai</button>
             
             </div>
             </form>

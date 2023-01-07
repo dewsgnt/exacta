@@ -4,6 +4,7 @@ import(
 	"exacta/backend/repository"
 	"github.com/gin-gonic/gin"
 	"fmt"
+	"time"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -24,7 +25,20 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 		quizRepo,
 		gin,
 	}
-	gin.Use(cors.Default())
+	//gin.Use(cors.Default())
+	gin.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+  		AllowMethods:     []string{"PUT", "PATCH","GET","POST", "OPTIONS"},
+		AllowHeaders:     []string{"origin","Authorization","Cookie", "Content-Type", "X-CSRF-Token"},
+  		ExposeHeaders:    []string{"Content-Length","Authorization"},
+  		 AllowCredentials: true,
+  		AllowOriginFunc: func(origin string) bool {
+   		return origin == "https://github.com"
+  		},
+  		MaxAge: 12 * time.Hour,
+ 	}))
+
+	
 	v1 := gin.Group("/api/v1")
 
 	//users
@@ -34,6 +48,8 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 
 	//quiz
 	v1.GET("/home/categories", api.GET(api.AuthMiddleware(api.GetCategories)))
+	// v1.GET("/home/categories", api.GET((api.GetCategories)))
+
 	v1.GET("/home/quizzes", api.GET(api.GetQuizByCategoryIdWithPagination))
 	v1.POST("/home/submitanswer", api.POST(api.SubmitAnswersAttempts))
 	v1.GET("/home/score-boards", api.GET(api.GetScoresBoardByCategoryId))

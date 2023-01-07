@@ -21,13 +21,13 @@ type User struct {
 }
 
 type LoginResponse struct {
-	Email     string    `json:"email"`
+	Id     uint    `json:"user_id"`
 	Token     string    `json:"token"`
 	ExpiresAt time.Time `json:"expires_at"`
 }
 
 type Token struct {
-	UserId    int       `json:"user_id" binding:"required"`
+	UserId    uint       `json:"user_id" binding:"required"`
 	Token     string    `json:"token" binding:"required"`
 	ExpiresAt time.Time `json:"expires_at" binding:"required"`
 }
@@ -40,7 +40,7 @@ type AuthErrorResponse struct {
 var jwtKey = []byte("secret")
 
 type Claims struct {
-	Email string
+	UserId uint `json:"user_id"`
 	jwt.StandardClaims
 }
 
@@ -126,6 +126,7 @@ func (api *API) LoginUser(c *gin.Context) {
 	}
 
 	res, err := api.usersRepo.LoginUser(user.Email, *pass)
+	fmt.Println("user_id", *res)
 
 	c.Header("Content-Type", "application/json")
 	if err != nil {
@@ -136,14 +137,13 @@ func (api *API) LoginUser(c *gin.Context) {
 	expirationTime := time.Now().Add(60 * time.Minute)
 
 	claims := &Claims{
-		Email: *res,
+		UserId: *res,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
 	}
 	//encode claim
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	fmt.Println("tkn",token)
 
 	tokenString, err := token.SignedString(jwtKey)
 
@@ -154,15 +154,16 @@ func (api *API) LoginUser(c *gin.Context) {
 	//push token to db auth when user logged in
 	var pushtoken Token
 
-	fetchUserId, _ := api.usersRepo.FetchUserIdByEmail(*res)
+	//fetchUserId, _ := api.usersRepo.FetchUserIdByEmail(*res)
 
 	pushtoken = Token{
-		UserId:    *fetchUserId,
+		UserId:    *res,
 		Token:     tokenString,
 		ExpiresAt: expirationTime,
 	}
 
 	tknToDb, err := api.usersRepo.PushToken(pushtoken.UserId, pushtoken.Token, pushtoken.ExpiresAt)
+	fmt.Println("token to db", *tknToDb)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
@@ -176,10 +177,10 @@ func (api *API) LoginUser(c *gin.Context) {
 	})
 
 	c.JSON(http.StatusOK, gin.H{
-		"statusCode:": http.StatusOK,
+		"statusCode": http.StatusOK,
 		"message":      "success",
-		"data: ": LoginResponse{
-			Email:     *res,
+		"data": LoginResponse{
+			Id:     *res,
 			Token:     *tknToDb,
 			ExpiresAt: expirationTime,
 		},
@@ -210,7 +211,7 @@ func (api *API) LogoutUser(c *gin.Context) {
 	})
 
 	c.JSON(http.StatusOK, gin.H{
-		"statusCode:": http.StatusOK,
+		"statusCode": http.StatusOK,
 		"message":      "logout successful",
 	})
 }

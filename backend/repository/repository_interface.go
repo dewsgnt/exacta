@@ -10,10 +10,10 @@ type UserRepository interface{
 	FetchUserByID(id uint) (domain.UserDomain, error)
 	FetchUsers() ([]domain.UserDomain, error)
 	InsertUser(username string, email string, password string, nama_sekolah string) (*string, error)
-	LoginUser(email string, password string) (*string, error)
+	LoginUser(email string, password string) (*uint, error)
 	GetPasswordCompare(email string) (*string, error)
 	FetchUserIdByEmail(email string) (*int, error)
-	PushToken(user_id int, token string, expired_at time.Time) (*string, error)
+	PushToken(user_id uint, token string, expired_at time.Time) (*string, error)
 	DeleteToken(token string) (bool, error)
 }
 

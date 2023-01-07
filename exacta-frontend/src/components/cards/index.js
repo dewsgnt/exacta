@@ -13,17 +13,17 @@ const Cards = () => {
 
     const fetchCategories = async () => {
       try {
-        // let auth = localStorage.getItem("token");
+        let auth = localStorage.getItem("token");
+        console.log(auth);
+        // axios.defaults.withCredentials= true
          let { data: resp } = await axios.get(
           `http://localhost:8080/api/v1/home/categories`,
           {
             headers: {
-              Accept: "/",
-              "Content-Type": "application/json",
-              // Authorization: `Bearer ${auth}`
-              // Authorization: "Bearer " + auth,
-            }, 
-            // withCredentials: true  
+                  Authorization: `Bearer ${auth}`            }, 
+            //  withCredentials: true,
+            //  crossDomain: true  
+
           });
 
   
@@ -32,6 +32,7 @@ const Cards = () => {
         console.log(err);
       }
     };
+    
   
     useEffect(() => {
       fetchCategories();
