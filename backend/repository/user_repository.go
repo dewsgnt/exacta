@@ -3,8 +3,7 @@ import(
 	"database/sql"
 	"exacta/backend/model/domain"
 	"errors"
-	"time"
-	
+	"time"	
 )
 
 type UserRepositoryImpl struct{
@@ -18,7 +17,7 @@ func NewUserRepository(db *sql.DB) *UserRepositoryImpl {
 
 func (u *UserRepositoryImpl) FetchUserByID(id uint) (domain.UserDomain, error) {
 	user := domain.UserDomain{}
-	sqlStatement := `SELECT id, username, email, nama_sekolah FROM users WHERE id = ?`
+	sqlStatement := `SELECT user_id, username, email, nama_sekolah FROM users WHERE user_id = ?`
 
 	row := u.db.QueryRow(sqlStatement, id)
 	err := row.Scan(
