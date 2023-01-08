@@ -165,7 +165,7 @@ func (api *API) GetScoresBoardByCategoryId(c *gin.Context) {
 	var users []domain.UserDomain
 	for _, userResp := range usersResp{
 		user, err := api.usersRepo.FetchUserByID(userResp.Id)
-		if err != nil {
+		if err != nil {			
 			c.JSON(http.StatusInternalServerError, web.WebResponse{
 				Code:    http.StatusInternalServerError,
 				Message: http.StatusText(http.StatusInternalServerError),
