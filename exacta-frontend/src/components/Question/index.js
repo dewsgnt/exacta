@@ -148,7 +148,7 @@ const Question = () => {
         let data = JSON.parse(localStorage.getItem("answer"));
         data.category_id = categoryId;
         localStorage.setItem("answer", JSON.stringify(data));
-        // console.log("answr di atas " +localStorage.getItem("answer"));
+        console.log("answr di atas " +localStorage.getItem("answer"));
         data.duration = `${parseInt(
           timeStart[1] - timeRemaining[1]
         )}:${parseInt(timeStart[2] - timeRemaining[2])}`;
@@ -162,7 +162,7 @@ const Question = () => {
     if (pageQuestion > 9) {
       let auth = localStorage.getItem("token");
       let answers = JSON.parse(localStorage.getItem("answer"));
-      // console.log("answers di bawah "+ JSON.stringify(answers));
+      console.log("answers di bawah "+ JSON.stringify(answers));
       
       try {
         console.log("isi auth "+auth);
@@ -184,7 +184,7 @@ const Question = () => {
         }
       } catch (err) {
         //console.log(resp)
-        console.log("masuk err di push answer"+err);
+        // console.log("masuk err di push answer"+err);
       }
     } else if (selected) {
       router.push({
