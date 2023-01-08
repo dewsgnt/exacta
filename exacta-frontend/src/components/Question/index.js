@@ -48,11 +48,30 @@ const Question = () => {
     }
   }
 
-  useEffect(() => {
-    const endtime = new Date(Date.parse(new Date()) + 3600 * 1000);
-    interval.current = setInterval(() => startCount(endtime), 1000);
-    return () => clearInterval(interval.current);
-  }, []);
+  // useEffect(() => {
+  //   const endtime = new Date(Date.parse(new Date()) + 3600 * 1000);
+  //   interval.current = setInterval(() => startCount(endtime), 1000);
+  //   return () => clearInterval(interval.current);
+  // }, []);
+
+  	const clearTimer = (endtime) => {
+		setStopwatch('00:30:00');
+		if (interval.current) clearInterval(interval.current);
+		const id = setInterval(() => {
+			startCount(endtime);
+		}, 1000)
+		interval.current = id;
+	}
+
+	const getDeadTime = () => {
+		let deadline = new Date();
+		deadline.setSeconds(deadline.getSeconds() + 1800);
+		return deadline;
+	}
+  
+  	useEffect(() => {
+		clearTimer(getDeadTime());
+	}, []);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -120,7 +139,7 @@ const Question = () => {
       localStorage.setItem("answer", JSON.stringify(data));
 
       if (pageQuestion === 10) {
-        let timeStart = "00:59:59";
+        let timeStart = "00:29:59";
         timeStart = timeStart.split(":");
 
         let timeRemaining = stopwatch;
@@ -129,7 +148,7 @@ const Question = () => {
         let data = JSON.parse(localStorage.getItem("answer"));
         data.category_id = categoryId;
         localStorage.setItem("answer", JSON.stringify(data));
-        console.log("answr di atas " +localStorage.getItem("answer"));
+        // console.log("answr di atas " +localStorage.getItem("answer"));
         data.duration = `${parseInt(
           timeStart[1] - timeRemaining[1]
         )}:${parseInt(timeStart[2] - timeRemaining[2])}`;
@@ -143,7 +162,7 @@ const Question = () => {
     if (pageQuestion > 9) {
       let auth = localStorage.getItem("token");
       let answers = JSON.parse(localStorage.getItem("answer"));
-      console.log("answers di bawah "+ JSON.stringify(answers));
+      // console.log("answers di bawah "+ JSON.stringify(answers));
       
       try {
         console.log("isi auth "+auth);
@@ -190,9 +209,9 @@ const Question = () => {
                 {/* <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/> */}
                     <div className='flex flex-row justify-between'>
                         <h3 className='tablet:text-xl text-text_main font-semibold tablet:mb-[5vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
-                        {/* <div className="tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile">
-			                <h2>{stopwatch}</h2>
-		                </div> */}
+                        <div className="tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile">
+			                <h2 className="duration font-semibold">{stopwatch}</h2>
+		                </div>
                     </div>
                         <div className="text-black text-xl">
                           
