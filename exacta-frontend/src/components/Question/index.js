@@ -20,51 +20,12 @@ const Question = () => {
   
   // console.log("category_id", categoryId);
 
-  // const categoryId = 0;
-
-  function getTimeRemaining(endtime) {
-    const total = Date.parse(endtime) - Date.parse(new Date());
-    const hours = Math.floor(
-      (total % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((total % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((total % (1000 * 60)) / 1000);
-
-    return {
-      total,
-      hours,
-      minutes,
-      seconds,
-    };
-  }
-
-  function startCount(endtime) {
-    let { total, hours, minutes, seconds } = getTimeRemaining(endtime);
-    if (total >= 0) {
-      setStopwatch(
-        (hours > 9 ? hours : "0" + hours) +
-          ":" +
-          (minutes > 9 ? minutes : "0" + minutes) +
-          ":" +
-          (seconds > 9 ? seconds : "0" + seconds)
-      );
-    } else {
-      clearInterval(interval.current);
-    }
-  }
-
-  useEffect(() => {
-    const endtime = new Date(Date.parse(new Date()) + 3600 * 1000);
-    interval.current = setInterval(() => startCount(endtime), 1000);
-    return () => clearInterval(interval.current);
-  }, []);
-
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         // let auth = localStorage.getItem("token");
-        const token = res.data.token;
-        localStorage.setItem("token", token);
+        // const token = res.data.token;
+        // localStorage.setItem("token", token);
 
         const { data: res } = await axios.get(
           `http://localhost:8080/api/v1/home/quizzes?category_id=${categoryId}&page=${pageQuestion}&limit=1`,
@@ -72,7 +33,7 @@ const Question = () => {
             headers: {
               Accept: "/",
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
+              // Authorization: "Bearer " + token,
             }, 
           }
         );
@@ -99,7 +60,7 @@ const Question = () => {
   };
 
   const handleQuit = () => {
-    router.push({ pathname: "/" });
+    router.push({ pathname: "/home-page" });
     setPageQuestion(0);
     setQuestions();
   };
@@ -114,8 +75,8 @@ const Question = () => {
     if (pageQuestion === 1) {
       let data = {
         answers: [values],
-        category_id: id,
-        duration: "",
+        // category_id: id,
+        
       };
       localStorage.setItem("answer", JSON.stringify(data));
     } else if (pageQuestion > 1) {
@@ -124,17 +85,8 @@ const Question = () => {
       localStorage.setItem("answer", JSON.stringify(data));
 
       if (pageQuestion === 10) {
-        let timeStart = "00:30:00";
-        timeStart = timeStart.split(":");
-
-        let timeRemaining = stopwatch;
-        timeRemaining = timeRemaining.split(":");
-
         let data = JSON.parse(localStorage.getItem("answer"));
         data.category_id = categoryId;
-        data.duration = `${parseInt(
-          timeStart[1] - timeRemaining[1]
-        )}:${parseInt(timeStart[2] - timeRemaining[2])}`;
         localStorage.setItem("answer", JSON.stringify(data));
         console.log(localStorage.getItem("answer"));
       }
@@ -144,24 +96,27 @@ const Question = () => {
   const handleNext = async () => {
     if (pageQuestion > 9) {
       let auth = localStorage.getItem("token");
-      let answers = localStorage.getItem("answer");
+      // console.log(auth);
+      let answers = JSON.parse(localStorage.getItem("answer"));
+        // console.log(answers);
 
       try {
         let { data: res } = await axios.post(
-          `http:localhost:8080/api/v1/home/process-and-result`,
+          `http://localhost:8080/api/v1/home/submitanswer`, 
           answers,
           {
             headers: {
               Accept: "/",
               "Content-Type": "application/json",
-              Authorization: "Bearer " + auth,
+              Authorization: `Bearer ${auth}`
             },
           }
         );
-
         localStorage.setItem("result", JSON.stringify(res.data));
-        router.push("/result");
-      } catch (err) {}
+        router.push("/result-page");
+      } catch (err) {
+        console.log(err);
+      }
     } else if (selected) {
       router.push({
         pathname: "/question-page",
@@ -173,18 +128,17 @@ const Question = () => {
     }
   };
 
-
     return (
         <section id='question' className="flex flex-col items-center h-[100vh] bg-[#EDEFFB]">
             <div>
                 <h1 className="text-text_main text-5xl py-[8vh]">Pertanyaan</h1>
             </div>
             <div className='flex'>
-            <div className='flex h-[60vh] w-[70vw] btn bg-white rounded-2xl'>
+            <div className='flex h-auto w-[70vw] btn bg-white rounded-2xl'>
                 <div className='flex flex-col p-[2vw] tablet:w-[100%] mobile:w-[80%]'>
                 {/* <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/> */}
                     <div className='flex flex-row justify-between'>
-                        <h3 className='tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
+                        <h3 className='tablet:text-xl text-text_main font-semibold tablet:mb-[5vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
                         {/* <div className="tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile">
 			                <h2>{stopwatch}</h2>
 		                </div> */}
@@ -192,7 +146,7 @@ const Question = () => {
                         <div className="text-black text-xl">
                           
                         {questions.map((item, index) => (
-                          <h5 key={index} className="mb-4">
+                          <h5 key={index} className="">
                             {item.question}
                           </h5>
                         ))}
@@ -200,7 +154,7 @@ const Question = () => {
                     
                     {options.map((index) => (
                     <button
-                        className={`singleOption  
+                        className={`singleOption flex flex-col justify-center rounded-2xl
                         ${
                         selected && handleSelect(index)
                         }`}
@@ -216,14 +170,8 @@ const Question = () => {
                     
                     </div>
                     </div>
-                    {/* <div className="flex pt-[30vh] items-end justify-between">
-                        <div>
-                        <Button title='Kembali' onClick={() => router.push('#')} btnStyle='bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]' />  
-                        <Button title='Selanjutnya' onClick={() => router.push('#')} btnStyle='bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]' />  
-                        </div>
-                        <Button title='Selesai' onClick={() => router.push('/skor-page')} btnStyle='bg-bg_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]' />  
-                    </div> */}
-                    <div className="flex pt-[30vh] items-end justify-end">
+                  
+                    <div className="flex pt-[5vh] items-end justify-end">
                         <div>
                         <button
                             type="button"

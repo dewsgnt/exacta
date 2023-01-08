@@ -5,7 +5,7 @@ import Header from '../Header'
 import HeaderHome from '../Header-Home'
 // import Footer from '../Footer'
 
-const LayoutScore = ({ children, title, path }) => {
+const LayoutHome = ({ children, title, path }) => {
   return (
     <div className='bg-bg_blue flex flex-col justify-between h-[100vh]'>
         <Head>
@@ -23,4 +23,4 @@ const LayoutScore = ({ children, title, path }) => {
   )
 }
 
-export default LayoutScore
+export default LayoutHome
