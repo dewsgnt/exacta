@@ -10,6 +10,11 @@ import Cards from "../src/components/cards";
 
 export default function Home() {
   const router = useRouter();
+
+  const handleClick = () => {
+    alert("Daftar atau Masuk dulu ya")
+    router.push('/login-page')
+  }
   return (
     <Layout title='EXACTA'>
       {/* Jumbutron */}
@@ -26,27 +31,26 @@ export default function Home() {
       <p className="text-text_blue text-xl w-[100%] py-[6vh]">adalah sebuah aplikasi berbasis web sebagai tempat untuk belajar matematika yang diperuntukkan kepada pelajar kelas 6 SD ataupun sederajat dengan tampilan yang menarik dan papan score yang bisa menstimulasi jiwa kompetisi anak.</p> </div>
       </section>
 
-      <Cards/>
+      {/* <Cards/> */}
 
     {/* Subject */}
-    {/* <section id='course' className="flex flex-col items-center justify-center h-[100vh] bg-[#EDEFFB]">
+    <section id='course' className="flex flex-col items-center justify-center h-[100vh] bg-[#EDEFFB]">
     <h1 className="text-text_main text-5xl pb-[8vh]">KUIS</h1>
         <div className="flex flex-row">
           <Card
             title='Bilangan Bulat'
-            onClick={() => router.push('/question-page')}
-          />
-        <Card
-            title='KPK dan FPB'
-            onClick={() => router.push('/question-page')}
+            onClick={() => {handleClick()}}
           />
         <Card
             title='Statistika'
-            onClick={() => router.push('/question-page')}
+            onClick={() => {handleClick()}}
+          />
+        <Card
+            title='FPB & KPK'
+            onClick={() => {handleClick()}}
           />
         </div>
-        <Cards/>
-      </section> */}
+      </section>
       
     </Layout>
   )

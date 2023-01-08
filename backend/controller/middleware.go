@@ -48,6 +48,7 @@ func (m *API) AuthMiddleware(next gin.HandlerFunc) gin.HandlerFunc {
 			return
 		}
 		userId, err := ParseToken(c, header)
+		fmt.Println("dpt ga user id", userId)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, web.WebResponse{
 				Code : http.StatusUnauthorized,
@@ -183,4 +184,12 @@ func (api *API) PATCH(next gin.HandlerFunc) gin.HandlerFunc {
 		}
 		next(ctx)
 	})
+}
+
+func GetUserId() (uint, error) {
+	if userIdVal == 0 {
+		return 0, fmt.Errorf("user id is not set")
+	}
+
+	return userIdVal, nil
 }

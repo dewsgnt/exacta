@@ -13,7 +13,7 @@ import (
 )
 
 func (api *API) GetCategories(c *gin.Context) {
-	go api.AllowOrigin(c)
+	//go api.AllowOrigin(c)
 	categories, err := api.quizRepo.FindCategories()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"errors": err})
@@ -35,7 +35,7 @@ func (api *API) GetCategories(c *gin.Context) {
 }
 
 func (api *API) GetQuizByCategoryIdWithPagination(c *gin.Context) {
-	go api.AllowOrigin(c)
+	//go api.AllowOrigin(c)
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	limit, _:= strconv.Atoi(c.Query("limit"))
@@ -74,23 +74,9 @@ func (api *API) GetQuizByCategoryIdWithPagination(c *gin.Context) {
 }	
 
 func (api *API) SubmitAnswersAttempts(c *gin.Context) {
-	go api.AllowOrigin(c)
-	token, err := c.Request.Cookie("token")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			c.JSON(http.StatusUnauthorized, gin.H{"Error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	tokenString := token.Value
-	fmt.Println("tokenString", tokenString)
-
-	userId, err := api.usersRepo.GetUserIDByToken(tokenString)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-	}
+	//go api.AllowOrigin(c)
+	userId, _ := GetUserId()
+	
 	fmt.Println("userId", userId)
 	
 	var answerAttemptReq web.AnswerAttemptRequest
@@ -106,7 +92,7 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	fmt.Println("answerAttemptReq", answerAttemptReq)
 
 
-	err = answerAttemptReq.ValidateAnswerAttempt()
+	err := answerAttemptReq.ValidateAnswerAttempt()
 	if err != nil {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, web.WebResponse{
@@ -164,7 +150,7 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 }
 
 func (api *API) GetScoresBoardByCategoryId(c *gin.Context) {
-	go api.AllowOrigin(c)
+	//go api.AllowOrigin(c)
 	categoryId, _ := strconv.Atoi(c.Query("category_id"))
 
 	usersResp,err := api.usersRepo.FetchUsers()

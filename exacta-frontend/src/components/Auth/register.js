@@ -35,7 +35,8 @@ const Register = () => {
       console.log(res.statusCode);
 
       if (res.statusCode === 200) {
-        alert('udah regist ini')
+        alert('Yey, Kamu berhasil daftar, silahkan masuk!!')
+        router.push("/login-page");
       }
     } catch (error) {
       alert(

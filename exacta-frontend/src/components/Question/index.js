@@ -17,10 +17,6 @@ const Question = () => {
   // const [categoryId, setCategoryId] = useState()
   const [selected, setSelected] = useState();
   const interval = useRef(null);
-  
-  // console.log("category_id", categoryId);
-
-  // const categoryId = 0;
 
   function getTimeRemaining(endtime) {
     const total = Date.parse(endtime) - Date.parse(new Date());
@@ -37,7 +33,6 @@ const Question = () => {
       seconds,
     };
   }
-
   function startCount(endtime) {
     let { total, hours, minutes, seconds } = getTimeRemaining(endtime);
     if (total >= 0) {
@@ -62,9 +57,9 @@ const Question = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        // let auth = localStorage.getItem("token");
-        const token = res.data.token;
-        localStorage.setItem("token", token);
+        let auth = localStorage.getItem("token");
+        //const token = res.data.token;
+        // localStorage.setItem("token", token);
 
         const { data: res } = await axios.get(
           `http://localhost:8080/api/v1/home/quizzes?category_id=${categoryId}&page=${pageQuestion}&limit=1`,
@@ -72,7 +67,7 @@ const Question = () => {
             headers: {
               Accept: "/",
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
+              Authorization: "Bearer " + auth,
             }, 
           }
         );
@@ -99,7 +94,7 @@ const Question = () => {
   };
 
   const handleQuit = () => {
-    router.push({ pathname: "/" });
+    router.push({ pathname: "/home-page" });
     setPageQuestion(0);
     setQuestions();
   };
@@ -114,8 +109,9 @@ const Question = () => {
     if (pageQuestion === 1) {
       let data = {
         answers: [values],
-        category_id: id,
+        category_id: 0,
         duration: "",
+        
       };
       localStorage.setItem("answer", JSON.stringify(data));
     } else if (pageQuestion > 1) {
@@ -124,7 +120,7 @@ const Question = () => {
       localStorage.setItem("answer", JSON.stringify(data));
 
       if (pageQuestion === 10) {
-        let timeStart = "00:30:00";
+        let timeStart = "00:59:59";
         timeStart = timeStart.split(":");
 
         let timeRemaining = stopwatch;
@@ -132,6 +128,8 @@ const Question = () => {
 
         let data = JSON.parse(localStorage.getItem("answer"));
         data.category_id = categoryId;
+        localStorage.setItem("answer", JSON.stringify(data));
+        console.log("answr di atas " +localStorage.getItem("answer"));
         data.duration = `${parseInt(
           timeStart[1] - timeRemaining[1]
         )}:${parseInt(timeStart[2] - timeRemaining[2])}`;
@@ -144,35 +142,42 @@ const Question = () => {
   const handleNext = async () => {
     if (pageQuestion > 9) {
       let auth = localStorage.getItem("token");
-      let answers = localStorage.getItem("answer");
-
+      let answers = JSON.parse(localStorage.getItem("answer"));
+      console.log("answers di bawah "+ JSON.stringify(answers));
+      
       try {
-        let { data: res } = await axios.post(
-          `http:localhost:8080/api/v1/home/process-and-result`,
+        console.log("isi auth "+auth);
+        let { data: resp } = await axios.post(
+          `http://localhost:8080/api/v1/home/submitanswer`, 
           answers,
           {
             headers: {
               Accept: "/",
               "Content-Type": "application/json",
-              Authorization: "Bearer " + auth,
+              Authorization: "Bearer " +auth
             },
+
           }
         );
-
-        localStorage.setItem("result", JSON.stringify(res.data));
-        router.push("/result");
-      } catch (err) {}
+        if (resp.code === 200){
+          console.log(localStorage.setItem("result", JSON.stringify(resp.data)));
+          router.push("/result-page");
+        }
+      } catch (err) {
+        //console.log(resp)
+        console.log("masuk err di push answer"+err);
+      }
     } else if (selected) {
       router.push({
         pathname: "/question-page",
         search: `?category_id=${categoryId}&page=${pageQuestion + 1}`,
       });
 
+
       setPageQuestion(pageQuestion + 1);
       setSelected();
     }
   };
-
 
     return (
         <section id='question' className="flex flex-col items-center h-[100vh] bg-[#EDEFFB]">
@@ -180,11 +185,11 @@ const Question = () => {
                 <h1 className="text-text_main text-5xl py-[8vh]">Pertanyaan</h1>
             </div>
             <div className='flex'>
-            <div className='flex h-[60vh] w-[70vw] btn bg-white rounded-2xl'>
+            <div className='flex h-auto w-[70vw] btn bg-white rounded-2xl'>
                 <div className='flex flex-col p-[2vw] tablet:w-[100%] mobile:w-[80%]'>
                 {/* <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/> */}
                     <div className='flex flex-row justify-between'>
-                        <h3 className='tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
+                        <h3 className='tablet:text-xl text-text_main font-semibold tablet:mb-[5vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
                         {/* <div className="tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile">
 			                <h2>{stopwatch}</h2>
 		                </div> */}
@@ -192,7 +197,7 @@ const Question = () => {
                         <div className="text-black text-xl">
                           
                         {questions.map((item, index) => (
-                          <h5 key={index} className="mb-4">
+                          <h5 key={index} className="">
                             {item.question}
                           </h5>
                         ))}
@@ -200,7 +205,7 @@ const Question = () => {
                     
                     {options.map((index) => (
                     <button
-                        className={`singleOption  
+                        className={`singleOption flex flex-col justify-center rounded-2xl
                         ${
                         selected && handleSelect(index)
                         }`}
@@ -216,14 +221,8 @@ const Question = () => {
                     
                     </div>
                     </div>
-                    {/* <div className="flex pt-[30vh] items-end justify-between">
-                        <div>
-                        <Button title='Kembali' onClick={() => router.push('#')} btnStyle='bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]' />  
-                        <Button title='Selanjutnya' onClick={() => router.push('#')} btnStyle='bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]' />  
-                        </div>
-                        <Button title='Selesai' onClick={() => router.push('/skor-page')} btnStyle='bg-bg_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]' />  
-                    </div> */}
-                    <div className="flex pt-[30vh] items-end justify-end">
+                  
+                    <div className="flex pt-[5vh] items-end justify-end">
                         <div>
                         <button
                             type="button"

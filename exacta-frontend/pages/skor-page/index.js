@@ -1,10 +1,10 @@
 import { Table } from "react-bootstrap";
-import LayoutScore from "../../src/components/Layout-Skor";
+import LayoutHome from "../../src/components/Layout-Home";
 
 const Skor = () => {
     
     return (
-    <LayoutScore>
+    <LayoutHome>
         <section id='course' className="flex flex-col items-center py-[10vh] h-[100vh] bg-[#EFEFEF]">
         <h1 className="text-text_main text-5xl py-[8vh]">PAPAN SKOR</h1>
         
@@ -43,7 +43,7 @@ const Skor = () => {
                 
               </div>
             </section>
-        </LayoutScore>
+        </LayoutHome>
           )
 }
 

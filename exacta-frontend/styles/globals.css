@@ -31,3 +31,29 @@ a {
 .btn {
   box-shadow: -6px 6px 4px rgba(0, 0, 0, 0.5);
 }
+
+.options {
+  width: 100%;
+
+}
+
+.singleOption {
+  width: 99%;
+  height: 50px;
+  padding: 15px;
+  margin: 5px;
+  box-shadow: 0 0 2px black;
+}
+
+.select {
+  background-color: rgb(7, 207, 0);
+  color: white;
+  box-shadow: 0 0 1px black;
+}
+
+.wrong {
+  background-color: rgb(233, 0, 0);
+  color: white;
+  box-shadow: 0 0 1px black;
+}
+

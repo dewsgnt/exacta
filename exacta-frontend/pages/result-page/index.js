@@ -1,13 +1,13 @@
 import React from "react";
 import LayoutHome from "../../src/components/Layout-Home";
-import Question from "../../src/components/Question";
+import Result from "../../src/components/Result";
 
-const QuizPage = () => {
+const ResultPage = () => {
   return (
     <LayoutHome>
-      <Question />
+      <Result/>
     </LayoutHome>
   );
 };
 
-export default QuizPage;
+export default ResultPage;
