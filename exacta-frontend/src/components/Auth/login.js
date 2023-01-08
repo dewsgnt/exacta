@@ -27,7 +27,7 @@ const Login = () => {
           }
         );
         //console.log("hello" + JSON.stringify(res));
-        console.log(res.statusCode)
+        //console.log(res.statusCode)
         if (res.statusCode === 200) {
           alert('berhasil cccuuu')
           const token = res.data.token;

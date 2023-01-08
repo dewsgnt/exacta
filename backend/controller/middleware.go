@@ -161,7 +161,7 @@ func (api *API) POST(next gin.HandlerFunc) gin.HandlerFunc {
 
 func (api *API) DELETE(next gin.HandlerFunc) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
-		api.AllowOrigin(ctx)
+		//api.AllowOrigin(ctx)
 		log.Print("Delete: ", http.MethodDelete)
 		log.Print("Request method: ", ctx.Request.Method)
 		if ctx.Request.Method != http.MethodDelete {
@@ -174,7 +174,7 @@ func (api *API) DELETE(next gin.HandlerFunc) gin.HandlerFunc {
 
 func (api *API) PATCH(next gin.HandlerFunc) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
-		api.AllowOrigin(ctx)
+		//api.AllowOrigin(ctx)
 		log.Print("PATCH: ", http.MethodPatch)
 		log.Print("Request method: ", ctx.Request.Method)
 		if ctx.Request.Method != http.MethodPatch {

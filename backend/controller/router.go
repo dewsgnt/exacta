@@ -51,7 +51,7 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 	// v1.GET("/home/categories", api.GET((api.GetCategories)))
 
 	v1.GET("/home/quizzes", api.GET(api.GetQuizByCategoryIdWithPagination))
-	v1.POST("/home/submitanswer", api.POST(api.SubmitAnswersAttempts))
+	v1.POST("/home/submitanswer", api.POST(api.AuthMiddleware(api.SubmitAnswersAttempts)))
 	v1.GET("/home/score-boards", api.GET(api.GetScoresBoardByCategoryId))
 
 	return api
