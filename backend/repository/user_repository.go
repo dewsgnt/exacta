@@ -136,8 +136,8 @@ func (u *UserRepositoryImpl) PushToken(user_id uint, token string, expired_at ti
 	return &token, err
 }
 
-func (u *UserRepositoryImpl) DeleteToken(token string) (bool, error) {
-	_, err := u.db.Exec("DELETE FROM auth WHERE token = ?", token)
+func (u *UserRepositoryImpl) DeleteToken(id uint) (bool, error) {
+	_, err := u.db.Exec("DELETE FROM auth WHERE user_id = ?", id)
 
 	if err != nil {
 		return false, err

@@ -44,7 +44,7 @@ func NewAPI(usersRepo repository.UserRepositoryImpl, quizRepo repository.QuizRep
 	//users
 	v1.POST("/users/regist", api.POST(api.PostUserRegist))
 	v1.POST("/users/login", api.POST(api.LoginUser))
-	v1.POST("/users/logout", api.POST(api.LogoutUser))
+	v1.POST("/users/logout", api.POST(api.AuthMiddleware(api.LogoutUser)))
 
 	//quiz
 	v1.GET("/home/categories", api.GET(api.AuthMiddleware(api.GetCategories)))

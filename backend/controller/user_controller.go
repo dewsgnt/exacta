@@ -58,7 +58,6 @@ func (api *API) PostUserRegist(c *gin.Context) {
 			"errors": errorMessages,
 		})
 		return
-
 	}
 
 	err := user.ValidateRegister()
@@ -76,7 +75,7 @@ func (api *API) PostUserRegist(c *gin.Context) {
 	res, err := api.usersRepo.InsertUser(user.Username, user.Email, string(hashedPassword), user.NamaSekolah)
 	if res == nil && err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"status code": http.StatusBadRequest,
+			"statusCode": http.StatusBadRequest,
 			"message":     "Email Has Registered!",
 		})
 		return
@@ -134,7 +133,6 @@ func (api *API) LoginUser(c *gin.Context) {
 	}
 
 	expirationTime := time.Now().Add(60 * time.Minute)
-
 	claims := &Claims{
 		UserId: *res,
 		StandardClaims: jwt.StandardClaims{
@@ -187,20 +185,16 @@ func (api *API) LoginUser(c *gin.Context) {
 
 func (api *API) LogoutUser(c *gin.Context) {
 	// go api.AllowOrigin(c)
-	token, err := c.Request.Cookie("token")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "no cookie"})
-			return
-		}
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	userId, err := GetUserId()
+	if err != nil{
+		c.JSON(http.StatusUnauthorized, web.WebResponse{
+			Code : http.StatusUnauthorized,
+			Message : http.StatusText(http.StatusUnauthorized),
+			Data: err.Error(),
+		})
 		return
 	}
-	if token.Value == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "no cookie"})
-		return
-	}
-	api.usersRepo.DeleteToken(token.Value)
+	api.usersRepo.DeleteToken(userId)
 
 	http.SetCookie(c.Writer, &http.Cookie{
 		Name:    "token",
@@ -210,7 +204,7 @@ func (api *API) LogoutUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"statusCode": http.StatusOK,
-		"message":      "logout successful",
+		"message":    "logged out!",
 	})
 }
 

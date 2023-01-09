@@ -81,7 +81,7 @@ const Board = () => {
         <thead>
             <tr className="">
                 <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[8vw] border border-slate-300">Nama</th>
-                <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[6vw] border-y-2 border-r-2">Nama Sekolah</th>
+                <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[6vw] border border-slate-300">Nama Sekolah</th>
                 <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[8vw] border border-slate-300 ">Nilai</th>
                 <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[8vw] border border-slate-300">Waktu</th>
             </tr>

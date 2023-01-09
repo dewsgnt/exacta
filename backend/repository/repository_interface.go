@@ -14,7 +14,7 @@ type UserRepository interface{
 	GetPasswordCompare(email string) (*string, error)
 	FetchUserIdByEmail(email string) (*int, error)
 	PushToken(user_id uint, token string, expired_at time.Time) (*string, error)
-	DeleteToken(token string) (bool, error)
+	DeleteToken(id uint) (bool, error)
 }
 
 type QuizRepository interface{
