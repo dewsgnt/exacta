@@ -62,6 +62,7 @@ const Board = () => {
   return (
     <section id='course' className="board flex flex-col items-center py-[10vh] h-auto  bg-[#EFEFEF]">
     <h1 className="text-text_main text-5xl py-[8vh]">PAPAN SKOR</h1>
+    <h2 className="text-2xl pb-[5vh] w-[70%] text-black">Silahkan pilih salah satu kategori di bawah ini untuk melihat papan skor</h2>
       <div className="courses items-center justify-center">
         {categories.map((category) => (
           <button
@@ -86,20 +87,34 @@ const Board = () => {
             </tr>
           </thead>
           <tbody>
-            {scoresBoard.map((scoreBoard, index) => {
-              return scoresBoard.length !== 0 ? (
-                <tr key={index}>
-                  <td className="font-normal text-2xl py-[0.7vh] border border-slate-300">{scoreBoard.username}</td>
-                  <td className="font-normal text-2xl py-[0.7vh] border border-slate-300">{scoreBoard.score}</td>
-                  <td className="font-normal text-2xl py-[0.7vh] border border-slate-300">{scoreBoard.duration}</td>
-                </tr>
-              ) : (
-                <tr key={index}>
-                  <td>{scoreBoard.duration}</td>
+            {
+            scoresBoard.sort((a, b) => {
+              let durations = a.duration.split(":")
+              let durationA = parseInt(durations[0]) * 60 + parseInt(durations[1]);
+              durations = b.duration.split(":");
+              let durationB = parseInt(durations[0]) * 60 + parseInt(durations[1]);
+              
+              if (a.score === b.score) {
+                return durationA - durationB;
+              } else {
+                return b.score - a.score;
+              }
+            }).map((score) => {
+              let durations = score.duration.split(":");
+              durations[0] = parseInt(durations[0]) < 10 ? "0" + durations[0] : durations[0];
+              durations[1] = parseInt(durations[1]) < 10 ? "0" + durations[1] : durations[1];
+              return (
+                <tr className="bg-white">
+                  <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{score.username}</td>
+                  {/* <td className="border border-slate-300 text-2xl py-[0.7vh] px-[6vw]">{score.school}</td> */}
+                  <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{score.score}</td>
+                  <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{
+                    durations[0] + " : " + durations[1]
+                  }</td>
                 </tr>
               );
-            })}
-
+            }
+            )}
           </tbody>
         </table>
       </div>

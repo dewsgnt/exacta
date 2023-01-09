@@ -17,7 +17,7 @@ const HeaderHome = ({ path }) => {
                 <div className="bg-bg_main flex flex-col p-4">
                     <button className="title-mobile self-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">X</button>
                     <nav className="flex flex-col items-start">
-                        <Link href='/'>
+                        <Link href='/home-page'>
                             <button className={`mb-[5vw] w-full title-mobile text-white ${path === '/' && 'text-white'}`}>
                                 BERANDA
                             </button>
@@ -49,7 +49,7 @@ const HeaderHome = ({ path }) => {
                     </Link>
                     <nav className="text-small flex justify-center w-full items-center">
                     <div className="mobile:hidden tablet:flex">
-                        <Link href='/'>
+                        <Link href='/home-page'>
                             <button className={`h-max font-semibold text-white ${path === '/about' && 'text-white'}`}>
                                 BERANDA
                             </button>
