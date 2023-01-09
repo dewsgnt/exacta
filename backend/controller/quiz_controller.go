@@ -75,9 +75,14 @@ func (api *API) GetQuizByCategoryIdWithPagination(c *gin.Context) {
 
 func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	//go api.AllowOrigin(c)
+	var namaSekolah string
 	userId, _ := GetUserId()
-	
-	fmt.Println("userId", userId)
+	users, _ := api.usersRepo.FetchUsers()
+	for _, user := range users{
+		if user.Id == userId{
+			namaSekolah = user.NamaSekolah
+		}
+	}
 	
 	var answerAttemptReq web.AnswerAttemptRequest
 
@@ -89,12 +94,12 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("answerAttemptReq", answerAttemptReq)
-
 
 	err := answerAttemptReq.ValidateAnswerAttempt()
 	if err != nil {
 		if err != nil {
+			fmt.Println("sini?")
+
 			c.JSON(http.StatusBadRequest, web.WebResponse{
 				Code:    http.StatusUnprocessableEntity,
 				Message: http.StatusText(http.StatusUnprocessableEntity),
@@ -108,11 +113,14 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 
 	for _, answer := range answerAttemptReq.Answers {
 		answersAttempt = append(answersAttempt, domain.AnswerAttemptDomain{
-			UserId: userId, QuizId: answer.QuizId, Answer: answer.Answer,
+			Answer: answer.Answer,
+			QuizId: answer.QuizId, 
+			UserId: userId,
+			NamaSekolah: namaSekolah, 
 		})
 	}
 
-	_, err = api.quizRepo.SaveAnswerAttempt(userId, answersAttempt)
+	_, err = api.quizRepo.SaveAnswerAttempt(userId, answersAttempt, namaSekolah)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -121,7 +129,10 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	}
 
 	_, err = api.quizRepo.SaveResult(
-		answerAttemptReq.Duration, userId, answerAttemptReq.CategoryId,
+		answerAttemptReq.Duration, 
+		userId, 
+		answerAttemptReq.CategoryId, 
+		namaSekolah,
 	)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -131,7 +142,7 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	}
 
 
-	result, err := api.quizRepo.FindResultByCategoryId(answerAttemptReq.CategoryId)
+	result, err := api.quizRepo.FindResultByCategoryId(answerAttemptReq.CategoryId, userId, namaSekolah)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -176,7 +187,6 @@ func (api *API) GetScoresBoardByCategoryId(c *gin.Context) {
 
 		users = append(users, user)
 	}
-	
 	scoreBoardResponse, err := api.quizRepo.FindScoresBoardByCategoryId(uint(categoryId))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, web.WebResponse{
@@ -238,9 +248,11 @@ func convertToScoreBoardResponses(users []domain.UserDomain, scoresBoard []domai
 
 	for _, scoreBoard := range scoresBoard {
 		var username string
+		var namaSekolah string
 		for _, user := range users {
 			if user.Id == scoreBoard.UserId {
 				username = user.Username
+				namaSekolah = user.NamaSekolah
 			}
 		}
 
@@ -248,6 +260,8 @@ func convertToScoreBoardResponses(users []domain.UserDomain, scoresBoard []domai
 			Username: username,
 			Score:    scoreBoard.Correct * 10,
 			Duration: scoreBoard.Duration,
+			NamaSekolah: namaSekolah,
+
 		})
 	}
 

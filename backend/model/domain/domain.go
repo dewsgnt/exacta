@@ -3,11 +3,11 @@ package domain
 import "time"
 
 type UserDomain struct {
-	Id        uint `json:"user_id"`
-	Username  string `json:"username"`
-	Email     string `json:"email"`
-	NamaSekolah string `json: "nama_sekolah"`
-	Password  string `json:"password"`
+	Id        	uint 	`json:"user_id"`
+	Username  	string 	`json:"username"`
+	Email     	string 	`json:"email"`
+	NamaSekolah string 	`json: "nama_sekolah"`
+	Password  	string 	`json:"password"`
 }
 
 type CategoryDomain struct {
@@ -37,21 +37,23 @@ type IncorrectAnswerDomain struct {
 }
 
 type AnswerAttemptDomain struct {
-	Id        uint
-	Answer    string
-	QuizId    uint
-	UserId    uint
+	Id        	uint
+	Answer    	string
+	QuizId    	uint
+	UserId    	uint
+	NamaSekolah string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type ResultDomain struct {
-	Id         uint
-	UserId     uint
-	CategoryId uint
-	Correct    uint
-	Wrong      uint
-	Duration   string
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	Id         	uint `json:"id"`
+	Correct    	uint	`json:"correct"`
+	Wrong      	uint	`json:"wrong"`
+	Duration   	string	`json:"duration"`
+	NamaSekolah string	`json:"nama_sekolah"`
+	UserId    	uint	`json:"user_id"`
+	CategoryId 	uint	`json:"category_id"`
+	CreatedAt  time.Time	`json:"created_at"`
+	UpdatedAt  time.Time	`json:"updated_at"`
 }

@@ -81,7 +81,7 @@ const Board = () => {
         <thead>
             <tr className="">
                 <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[8vw] border border-slate-300">Nama</th>
-                {/* <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[6vw] border-y-2 border-r-2">Nama Sekolah</th> */}
+                <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[6vw] border-y-2 border-r-2">Nama Sekolah</th>
                 <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[8vw] border border-slate-300 ">Nilai</th>
                 <th className="font-semibold bg-lightblue text-2xl py-[0.7vh] px-[8vw] border border-slate-300">Waktu</th>
             </tr>
@@ -106,7 +106,7 @@ const Board = () => {
               return (
                 <tr className="bg-white">
                   <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{score.username}</td>
-                  {/* <td className="border border-slate-300 text-2xl py-[0.7vh] px-[6vw]">{score.school}</td> */}
+                  <td className="border border-slate-300 text-2xl py-[0.7vh] px-[6vw]">{score.nama_sekolah}</td>
                   <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{score.score}</td>
                   <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{
                     durations[0] + " : " + durations[1]

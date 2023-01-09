@@ -38,7 +38,6 @@ func (m *API) AuthMiddleware(next gin.HandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//m.AllowOrigin(c)
 		header := strings.Split(c.Request.Header["Authorization"][0], " ")[1]
-		fmt.Println("isi header", header)
 		if header == " "{
 			c.JSON(http.StatusUnauthorized, web.WebResponse{
 				Code : http.StatusUnauthorized,
@@ -48,7 +47,6 @@ func (m *API) AuthMiddleware(next gin.HandlerFunc) gin.HandlerFunc {
 			return
 		}
 		userId, err := ParseToken(c, header)
-		fmt.Println("dpt ga user id", userId)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, web.WebResponse{
 				Code : http.StatusUnauthorized,

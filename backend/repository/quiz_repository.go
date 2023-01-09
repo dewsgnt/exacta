@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"exacta/backend/model/domain"
 )
 
@@ -120,28 +121,32 @@ func (q *QuizRepositoryImpl) FindIncorrectAnswersByQuizId(quizId uint) (domain.I
 
 	return incorrectAnswerDomain, nil
 }
-func (q *QuizRepositoryImpl) SaveAnswerAttempt(userId uint, answersAttempt []domain.AnswerAttemptDomain) (bool, error) {
+func (q *QuizRepositoryImpl) SaveAnswerAttempt(userId uint, answersAttempt []domain.AnswerAttemptDomain, namaSekolah string) (bool, error) {
 	query := `DELETE FROM answer_attempts;`
 	_, err := q.db.Exec(query)
 	if err != nil {
 		return false, err
 	}
 
-	query = `INSERT INTO answer_attempts (answer, quiz_id, user_id) VALUES (?, ?, ?);`
+	query = `INSERT INTO answer_attempts (answer, quiz_id, user_id, nama_sekolah) VALUES (?, ?, ?,?);`
 
 	for _, answerAttempt := range answersAttempt {
-		_, err := q.db.Exec(query, answerAttempt.Answer, answerAttempt.QuizId, userId)
+		_, err := q.db.Exec(query, 
+			answerAttempt.Answer, 
+			answerAttempt.QuizId, 
+			userId,
+			namaSekolah)
 		if err != nil {
 			return false, err
 		}
 	}
-
 	return true, nil
 }
 
-func (q *QuizRepositoryImpl) SaveResult(duration string, userId, categoryId uint) (bool, error) {
+func (q *QuizRepositoryImpl) SaveResult(duration string, userId, categoryId uint, namaSekolah string) (bool, error) {
+
 	query := `
-	INSERT INTO results (correct, wrong, duration, user_id, category_id)
+	INSERT INTO results (correct, wrong, duration, user_id, category_id, nama_sekolah)
 	SELECT 
 	(SELECT COUNT(aa.answer) FROM answer_attempts AS aa 
 		INNER JOIN quizzes AS q 
@@ -149,31 +154,33 @@ func (q *QuizRepositoryImpl) SaveResult(duration string, userId, categoryId uint
 	(SELECT COUNT(aa.answer) FROM answer_attempts AS aa 
 		INNER JOIN incorrect_answers AS ia
 			WHERE aa.answer = ia.option_one OR aa.answer = ia.option_two) AS wrong,
-	?, ?, ?;`
+	?, ?,?, ?;`
 
-	_, err := q.db.Exec(query, duration, userId, categoryId)
+	_, err := q.db.Exec(query, duration, userId, categoryId, namaSekolah)
 	if err != nil {
 		return false, err
 	}
-
 	return true, nil
 }
 
-func (q *QuizRepositoryImpl) FindResultByCategoryId(categoryId uint) (domain.ResultDomain, error) {
+func (q *QuizRepositoryImpl) FindResultByCategoryId(categoryId uint, userId uint, namaSekolah string) (domain.ResultDomain, error) {
 	query := `SELECT * FROM results WHERE category_id = ? ORDER BY id DESC;`
 
 	var result domain.ResultDomain
 	row := q.db.QueryRow(query, categoryId)
+	
 	err := row.Scan(
 		&result.Id, 
 		&result.Correct, 
 		&result.Wrong, 
 		&result.Duration,
-		&result.UserId, 
+		&namaSekolah,
+		&userId, 
 		&result.CategoryId,
 		&result.CreatedAt, 
 		&result.UpdatedAt,
 	)
+
 	if err != nil {
 		return result, err
 	}
@@ -198,11 +205,13 @@ func (q *QuizRepositoryImpl) FindScoresBoardByCategoryId(categoryId uint) ([]dom
 			&result.Correct, 
 			&result.Wrong, 
 			&result.Duration, 
+			&result.NamaSekolah,
 			&result.UserId,
 			&result.CategoryId, 
 			&result.CreatedAt, 
 			&result.UpdatedAt,
 		)
+		fmt.Println("isi result di repo", result)
 		if err != nil {
 			return nil, err
 		}

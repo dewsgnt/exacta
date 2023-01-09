@@ -21,7 +21,8 @@ type AnswerAttemptResponse struct {
 }
 
 type ScoreBoardResponse struct {
-	Username string `json:"username"`
-	Score    uint   `json:"score"`
-	Duration string `json:"duration"`
+	Username 	string 	`json:"username"`
+	Score    	uint   	`json:"score"`
+	Duration 	string 	`json:"duration"`
+	NamaSekolah string 	`json:"nama_sekolah"`
 }
