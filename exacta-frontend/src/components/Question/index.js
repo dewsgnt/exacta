@@ -112,11 +112,11 @@ const Question = () => {
     else if (index === questions[0]?.correct_answer) return "select";
   };
 
-  const handleQuit = () => {
-    router.push({ pathname: "/home-page" });
-    setPageQuestion(0);
-    setQuestions();
-  };
+  // const handleQuit = () => {
+  //   router.push({ pathname: "/home-page" });
+  //   setPageQuestion(0);
+  //   setQuestions();
+  // };
 
   const handleCheck = (index) => {
     setSelected(index);
@@ -201,7 +201,7 @@ const Question = () => {
     return (
         <section id='question' className="flex flex-col items-center h-[100vh] bg-[#EDEFFB]">
             <div>
-                <h1 className="text-text_main text-5xl py-[8vh]">Pertanyaan</h1>
+                <h1 className="text-text_main text-5xl pt-[12vh] pb-[8vh]">Pertanyaan</h1>
             </div>
             <div className='flex'>
             <div className='flex h-auto w-[70vw] btn bg-white rounded-2xl'>
@@ -247,7 +247,7 @@ const Question = () => {
                             type="button"
                             className="btn bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]"
                             style={{ width: 170 }}
-                            onClick={() => handleQuit()}
+                            onClick={() => router.push("/home-page#course")}
                             >
                             Kembali
                         </button>

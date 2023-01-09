@@ -109,7 +109,7 @@ const Board = () => {
                   <td className="border border-slate-300 text-2xl py-[0.7vh] px-[6vw]">{score.nama_sekolah}</td>
                   <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{score.score}</td>
                   <td className="border border-slate-300 text-2xl py-[0.7vh] px-[8vw]">{
-                    durations[0] + " : " + durations[1]
+                    durations[0] + ":" + durations[1]
                   }</td>
                 </tr>
               );

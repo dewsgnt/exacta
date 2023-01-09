@@ -9,6 +9,9 @@ const Result = () => {
 
   const router = useRouter();
   
+  let durations = hasil.duration.split(":");
+  durations[0] = parseInt(durations[0]) < 10 ? "0" + durations[0] : durations[0];
+  durations[1] = parseInt(durations[1]) < 10 ? "0" + durations[1] : durations[1];
 
   return (
     <section className="flex flex-col items-center h-[100vh] bg-[#EDEFFB]">
@@ -32,11 +35,15 @@ const Result = () => {
           <div className="text">
             <p className="isText text-xl text-black font-bold text-center">Duration</p>
             <span className="text-center">
-              <p className="text-7xl font-bold duration">{hasil.duration}</p>
+              <p className="text-7xl font-bold duration">{
+                durations[0] + ":" + durations[1]
+              }</p>
             </span>
           </div>
         </div>
       </div>
+
+      
 
       <div className="toScoreboard">
       <button

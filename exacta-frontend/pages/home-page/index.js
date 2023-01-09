@@ -16,7 +16,7 @@ export default function Home() {
       {/* Jumbutron */}
       <section className="bg-[url('../src/assets/images/main-bg.png')] bg-cover z-0 bg-no-repeat py-[4vw] px-[6vw] flex flex-col justify-center h-[100vh]">
         <h1 className="text-white text-5xl w-[50%]">UJI KEMAMPUAN MATEMATIKA KALIAN BERSAMA KAMI, YUK!</h1>
-        <Button title='COBA DI SINI' onClick={() => router.push('/#course')} btnStyle='bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mt-[5vh] mr-[2vw]' />  
+        <Button title='COBA DI SINI' onClick={() => router.push("/home-page#course")} btnStyle='bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mt-[5vh] mr-[2vw]' />  
       </section>
 
       {/* About */}
@@ -28,6 +28,9 @@ export default function Home() {
       </section>
 
       <Cards/>
+      <section id="course">
+        
+      </section>
       
     </LayoutHome>
   )

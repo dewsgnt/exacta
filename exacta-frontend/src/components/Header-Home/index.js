@@ -18,12 +18,12 @@ const HeaderHome = ({ path }) => {
                     <button className="title-mobile self-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">X</button>
                     <nav className="flex flex-col items-start">
                         <Link href='/home-page'>
-                            <button className={`mb-[5vw] w-full title-mobile text-white ${path === '/' && 'text-white'}`}>
+                            <button className={`mb-[5vw] w-full title-mobile text-white`}>
                                 BERANDA
                             </button>
                         </Link>
                         <Link href='/skor-page'>
-                            <button className={`mb-[5vw] w-full title-mobile text-white ${path === '/' && 'text-white'}`}>
+                            <button className={`mb-[5vw] w-full title-mobile text-white`}>
                                 PAPAN SKOR
                             </button>
                         </Link>
@@ -38,24 +38,24 @@ const HeaderHome = ({ path }) => {
                     </button>
                 </div>
             </nav>
-            <div className="flex w-full bg-bg_main justify-between items-center tablet:px-[1vw] mobile:px-[2vw] tablet:py-[0.5vw] mobile:py-[1.5vw]">
-                <Link href="/">
-                        <button className="flex items-center pr-[1.5vw] ml-[0.5vw]">
+            <div className="flex w-full bg-bg_main justify-center items-center tablet:px-[1vw] mobile:px-[2vw] tablet:py-[0.5vw] mobile:py-[1.5vw]">
+                <Link href="/home-page">
+                        <button className="flex items-center justify-center">
                             <div className="tablet:w-[2.3vw] mobile:w-[10vw]">
                                 {/* <Image src={forgexIcon} layout='responsive' alt='forgex icon' /> */}
                             </div>
-                            <h2 className='tablet:ml-[0.5vw] text-white text-2xl font-bold font-jockey mobile:ml-[2vw]'>EXACTA</h2>
+                            <h2 className='text-white text-2xl font-bold'>EXACTA</h2>
                         </button>
                     </Link>
                     <nav className="text-small flex justify-center w-full items-center">
-                    <div className="mobile:hidden tablet:flex">
+                    <div className="">
                         <Link href='/home-page'>
-                            <button className={`h-max font-semibold text-white ${path === '/about' && 'text-white'}`}>
+                            <button className={`h-max font-semibold text-white `}>
                                 BERANDA
                             </button>
                         </Link>
                         <Link href='/skor-page'>
-                            <button className={`ml-[5vw] h-max font-semibold text-white ${path === '/technology' && 'text-white'}`}>
+                            <button className={`ml-[5vw] h-max font-semibold text-white`}>
                                 PAPAN SKOR
                             </button>
                         </Link>

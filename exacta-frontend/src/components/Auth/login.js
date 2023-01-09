@@ -35,7 +35,7 @@ const Login = () => {
         }
       } catch (error) {
         alert(
-          "Username / Email Sudah terdaftar, Silahkan Periksa Data Anda Kembali!"
+          "Email atau Password salah nih, coba cek lagi ya"
         );
       }
     }
