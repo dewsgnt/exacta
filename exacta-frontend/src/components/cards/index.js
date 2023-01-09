@@ -14,7 +14,6 @@ const Cards = () => {
     const fetchCategories = async () => {
       try {
         let auth = localStorage.getItem("token");
-        console.log(auth);
         // axios.defaults.withCredentials= true
          let { data: resp } = await axios.get(
           `http://localhost:8080/api/v1/home/categories`,
@@ -74,7 +73,7 @@ const Cards = () => {
               >
                 <Card.Body className="flex flex-col justify-center items-center p-[2vw] m-[1vw] tablet:w-[100%] mobile:w-[80%]">
                   <center>
-                  <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/>
+                  <ImageComponent src={ellipse1} alt="" style="w-[10vw] mb-[4vh]"/>
                   </center>
                   <Card.Title 
                   style={{ color: "black" }} 
@@ -102,7 +101,7 @@ const Cards = () => {
               >
                 <Card.Body className="flex flex-col justify-center items-center p-[2vw] m-[1vw] tablet:w-[100%] mobile:w-[80%]">
                   <center>
-                  <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/>
+                  <ImageComponent src={ellipse1} alt="" style="w-[10vw] mb-[4vh]"/>
                   </center>
                   <Card.Title 
                   style={{ color: "black" }} 
@@ -130,7 +129,7 @@ const Cards = () => {
               >
                 <Card.Body className="flex flex-col justify-center items-center p-[2vw] m-[1vw] tablet:w-[100%] mobile:w-[80%]">
                   <center>
-                  <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/>
+                  <ImageComponent src={ellipse1} alt="" style="w-[10vw] mb-[4vh]"/>
                   </center>
                   <Card.Title 
                   style={{ color: "black" }} 

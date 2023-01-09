@@ -18,15 +18,10 @@ const(
 var userIdVal uint
 
 func (h *API) AllowOrigin(c *gin.Context) {
-	// localhost:8080 origin mendapat ijin akses
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	// allow cookie
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-	// semua header diperbolehkan untuk disisipkan
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, authorization, accept, origin, Cache-Control, X-Requested-With")
-	// semua method diperbolehkan masuk
 	c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-
 	if c.Request.Method == "OPTIONS" {
 		c.AbortWithStatus(204)
 		return
@@ -55,10 +50,6 @@ func (m *API) AuthMiddleware(next gin.HandlerFunc) gin.HandlerFunc {
 			})
 			return
 		}
-		// ctx := context.WithValue(c.Request.Context(), "email", claims.Email)
-		// ctx = context.WithValue(ctx, "props", claims)
-		// c.Request = c.Request.WithContext(ctx)
-
 		ctx := context.WithValue(c.Request.Context(), userIdKey, userId)
 		userIdVal = ctx.Value(userIdKey).(uint)
 

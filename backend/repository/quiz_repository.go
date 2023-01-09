@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"fmt"
 	"exacta/backend/model/domain"
 )
 
@@ -211,7 +210,6 @@ func (q *QuizRepositoryImpl) FindScoresBoardByCategoryId(categoryId uint) ([]dom
 			&result.CreatedAt, 
 			&result.UpdatedAt,
 		)
-		fmt.Println("isi result di repo", result)
 		if err != nil {
 			return nil, err
 		}

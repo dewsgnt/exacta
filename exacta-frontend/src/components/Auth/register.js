@@ -31,8 +31,6 @@ const Register = () => {
           },
         }
       );
-      console.log("hello" + JSON.stringify(res));
-      console.log(res.statusCode);
 
       if (res.statusCode === 200) {
         alert('Yey, Kamu berhasil daftar, silahkan masuk!!')

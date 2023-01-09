@@ -126,7 +126,6 @@ func (api *API) LoginUser(c *gin.Context) {
 	}
 
 	res, err := api.usersRepo.LoginUser(user.Email, *pass)
-	fmt.Println("user_id", *res)
 
 	c.Header("Content-Type", "application/json")
 	if err != nil {
@@ -163,7 +162,6 @@ func (api *API) LoginUser(c *gin.Context) {
 	}
 
 	tknToDb, err := api.usersRepo.PushToken(pushtoken.UserId, pushtoken.Token, pushtoken.ExpiresAt)
-	fmt.Println("token to db", *tknToDb)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Error": err.Error()})

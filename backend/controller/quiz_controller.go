@@ -3,11 +3,8 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"fmt"
-
 	"exacta/backend/model/domain"
 	"exacta/backend/model/web"	
-
 	"github.com/gin-gonic/gin"
 
 )
@@ -98,8 +95,6 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 	err := answerAttemptReq.ValidateAnswerAttempt()
 	if err != nil {
 		if err != nil {
-			fmt.Println("sini?")
-
 			c.JSON(http.StatusBadRequest, web.WebResponse{
 				Code:    http.StatusUnprocessableEntity,
 				Message: http.StatusText(http.StatusUnprocessableEntity),
