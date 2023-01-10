@@ -12,7 +12,7 @@ const Card = ({ title, description, onClick, style }) => {
           <div className='flex flex-col'>
             <h3 className='tablet:text-3xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile text-start'>{title}</h3>
             </div>
-            <ButtonIcon onClick={onClick} style="w-[1vw] place-content-end" />
+            <ButtonIcon onClick={onClick} style="w-[1vw]" />
           
            </div>
         </div>

@@ -112,7 +112,7 @@ const Login = () => {
             <h2 className="text-3xl font-bold">Halo, Teman-teman!</h2>
             <div className="border-2 w-10 border-white inline-block mb-2"></div>
             <p className="mb-2">Uji coba kemampuan matematika kalian bersama kami, yuk!</p>
-            <a href="/register-page" className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-bg_main mt-[7vh]">Register</a>
+            <a href="/register-page" className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-bg_main mt-[7vh]">Daftar</a>
             </div>
         </div>
     </section>
