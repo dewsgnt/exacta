@@ -6,6 +6,7 @@ import (
 	"exacta/backend/model/domain"
 	"exacta/backend/model/web"	
 	"github.com/gin-gonic/gin"
+	"fmt"
 
 )
 
@@ -144,8 +145,10 @@ func (api *API) SubmitAnswersAttempts(c *gin.Context) {
 		})
 		return
 	}
+	fmt.Println("result", result)
 
 	resultResp := convertToAnswersAttemptResponse(result)
+	fmt.Println("resultResp", resultResp)
 
 
 	c.JSON(http.StatusOK, web.WebResponse{

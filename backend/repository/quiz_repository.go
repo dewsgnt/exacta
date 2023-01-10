@@ -111,8 +111,10 @@ func (q *QuizRepositoryImpl) FindIncorrectAnswersByQuizId(quizId uint) (domain.I
 	var incorrectAnswerDomain domain.IncorrectAnswerDomain
 	row := q.db.QueryRow(query, quizId)
 	err := row.Scan(
-		&incorrectAnswerDomain.Id, &incorrectAnswerDomain.QuizId,
-		&incorrectAnswerDomain.OptionOne, &incorrectAnswerDomain.OptionTwo,
+		&incorrectAnswerDomain.Id, 
+		&incorrectAnswerDomain.QuizId,
+		&incorrectAnswerDomain.OptionOne, 
+		&incorrectAnswerDomain.OptionTwo,
 	)
 	if err != nil {
 		return incorrectAnswerDomain, err
@@ -147,11 +149,11 @@ func (q *QuizRepositoryImpl) SaveResult(duration string, userId, categoryId uint
 	query := `
 	INSERT INTO results (correct, wrong, duration, user_id, category_id, nama_sekolah)
 	SELECT 
-	(SELECT COUNT(aa.answer) FROM answer_attempts AS aa 
-		INNER JOIN quizzes AS q 
+	(SELECT COUNT(DISTINCT aa.answer) FROM answer_attempts AS aa 
+		INNER JOIN quizzes AS q on aa.quiz_id = q.id 
 			WHERE aa.answer = q.correct_answer) AS correct,
-	(SELECT COUNT(aa.answer) FROM answer_attempts AS aa 
-		INNER JOIN incorrect_answers AS ia
+	(SELECT COUNT(DISTINCT aa.answer) FROM answer_attempts AS aa 
+		INNER JOIN incorrect_answers AS ia on aa.quiz_id = ia.quiz_id 
 			WHERE aa.answer = ia.option_one OR aa.answer = ia.option_two) AS wrong,
 	?, ?,?, ?;`
 
@@ -173,8 +175,8 @@ func (q *QuizRepositoryImpl) FindResultByCategoryId(categoryId uint, userId uint
 		&result.Correct, 
 		&result.Wrong, 
 		&result.Duration,
-		&namaSekolah,
-		&userId, 
+		&result.NamaSekolah,
+		&result.UserId, 
 		&result.CategoryId,
 		&result.CreatedAt, 
 		&result.UpdatedAt,
