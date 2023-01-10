@@ -1,10 +1,8 @@
-import styles from '../Button/Button.module.css';
-
 import { ChevronRightIcon } from '@heroicons/react/solid'
 
 const ButtonIcon = ({onClick, title}) => {
   return (
-    <div className='place-self-end items-end'>
+    <div className=''>
       <button
         onClick={(e) => {
             e.preventDefault();
@@ -18,7 +16,5 @@ const ButtonIcon = ({onClick, title}) => {
     
   )
 }
-
-// text-left py-[0.4vw] h-max rounded text-white text-sm flex justify-left
 
 export default ButtonIcon

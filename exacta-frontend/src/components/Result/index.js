@@ -19,19 +19,19 @@ const Result = () => {
       <div id="isResult">
         <div className="flex justify-between items-center py-[5vh] px-[10vw] h-[50vh] w-[70vw] btn bg-white rounded-2xl">
           <div className="">
-            <p className="isText text-xl text-black font-bold text-center">Correct</p>
+            <p className="isText text-xl text-black font-bold text-center">Benar</p>
             <span className="text-center">
               <p className="text-7xl font-bold correctAnswer">{hasil.correct}</p>
             </span>
           </div>
           <div className="text">
-            <p className="isText text-xl text-black font-bold text-center">Wrong</p>
+            <p className="isText text-xl text-black font-bold text-center">Salah</p>
             <span className="text-center">
               <p className="text-7xl font-bold wrongAnswer">{hasil.wrong}</p>
             </span>
           </div>
           <div className="text">
-            <p className="isText text-xl text-black font-bold text-center">Duration</p>
+            <p className="isText text-xl text-black font-bold text-center">Durasi</p>
             <span className="text-center">
               <p className="text-7xl font-bold duration">{
                 durations[0] + ":" + durations[1]

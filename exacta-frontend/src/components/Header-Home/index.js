@@ -1,12 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { MenuIcon } from '@heroicons/react/solid'
-
-import Button from "../Button";
-
-// import forgexIcon from '../../assets/images/forgex-icon.svg';
 
 const HeaderHome = ({ path }) => {
     const router = useRouter();
@@ -41,9 +36,6 @@ const HeaderHome = ({ path }) => {
             <div className="flex w-full bg-bg_main justify-center items-center tablet:px-[1vw] mobile:px-[2vw] tablet:py-[0.5vw] mobile:py-[1.5vw]">
                 <Link href="/home-page">
                         <button className="flex items-center justify-center">
-                            <div className="tablet:w-[2.3vw] mobile:w-[10vw]">
-                                {/* <Image src={forgexIcon} layout='responsive' alt='forgex icon' /> */}
-                            </div>
                             <h2 className='text-white text-2xl font-bold'>EXACTA</h2>
                         </button>
                     </Link>
@@ -61,9 +53,7 @@ const HeaderHome = ({ path }) => {
                         </Link>
                     </div>
                 </nav>
-                {/* <Button title='MASUK' onClick={() => router.push('/login-page')} btnStyle='bg-lightblue rounded-3xl border border-white border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] my-[0.4vw] mr-[2vw]' /> */}
-                
-                 </div>
+            </div>
         </div>
 
     )

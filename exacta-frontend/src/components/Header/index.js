@@ -6,8 +6,6 @@ import { MenuIcon } from '@heroicons/react/solid'
 
 import Button from "../Button";
 
-// import forgexIcon from '../../assets/images/forgex-icon.svg';
-
 const Header = ({ path }) => {
     const router = useRouter();
     return (
@@ -22,7 +20,7 @@ const Header = ({ path }) => {
                                 BERANDA
                             </button>
                         </Link>
-                        <Link href='/skor-page'>
+                        <Link href='/'>
                             <button className={`mb-[5vw] w-full title-mobile text-white ${path === '/' && 'text-white'}`}>
                                 PAPAN SKOR
                             </button>
@@ -41,9 +39,6 @@ const Header = ({ path }) => {
             <div className="flex w-full bg-bg_main justify-between items-center tablet:px-[1vw] mobile:px-[2vw] tablet:py-[0.5vw] mobile:py-[1.5vw]">
                 <Link href="/">
                         <button className="flex items-center pr-[1.5vw] ml-[0.5vw]">
-                            <div className="tablet:w-[2.3vw] mobile:w-[10vw]">
-                                {/* <Image src={forgexIcon} layout='responsive' alt='forgex icon' /> */}
-                            </div>
                             <h2 className='tablet:ml-[0.5vw] text-white text-2xl font-bold font-jockey mobile:ml-[2vw]'>EXACTA</h2>
                         </button>
                     </Link>
@@ -54,7 +49,7 @@ const Header = ({ path }) => {
                                 BERANDA
                             </button>
                         </Link>
-                        <Link href='/skor-page'>
+                        <Link href='/'>
                             <button className={`ml-[5vw] h-max font-semibold text-white ${path === '/technology' && 'text-white'}`}>
                                 PAPAN SKOR
                             </button>

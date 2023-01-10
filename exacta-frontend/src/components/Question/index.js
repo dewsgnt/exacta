@@ -203,24 +203,24 @@ const Question = () => {
             <div className='flex'>
             <div className='flex h-auto w-[70vw] btn bg-white rounded-2xl'>
                 <div className='flex flex-col p-[2vw] tablet:w-[100%] mobile:w-[80%]'>
-                {/* <ImageComponent src={ellipse1} style="w-[10vw] mb-[4vh]"/> */}
-                    <div className='flex flex-row justify-between'>
-                        <h3 className='tablet:text-xl text-text_main font-semibold tablet:mb-[5vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
-                        <div className="tablet:text-xl tablet:mb-[10vh] mobile:mb-4 tracking-wider mobile:title-med-mobile">
-			                <h2 className="duration font-semibold">{stopwatch}</h2>
-		                </div>
-                    </div>
-                        <div className="text-black text-xl">
-                          
-                        {questions.map((item, index) => (
-                          <h5 key={index} className="">
-                            {item.question}
-                          </h5>
-                        ))}
-                    <div className="options">
-                    
+                  <div className='flex flex-row justify-between'>
+                    <h3 className='tablet:text-xl text-text_main font-semibold tablet:mb-[5vh] mobile:mb-4 tracking-wider mobile:title-med-mobile'>Soal ke {pageQuestion} dari 10</h3>
+                      <div className="tablet:text-xl tracking-wider mobile:title-med-mobile">
+			                  <h2 className="duration font-semibold">{stopwatch}</h2>
+		                  </div>
+                  </div>
+                  
+                  <div className="text-black text-xl">        
+                    {
+                    questions.map((item, index) => (
+                      <h5 key={index} className="">
+                        {item.question}
+                      </h5>
+                    ))}
+                  
+                  <div className="options">
                     {options.map((index) => (
-                    <button
+                      <button
                         className={`singleOption flex flex-col justify-center rounded-2xl
                         ${
                         selected && handleSelect(index)
@@ -231,37 +231,35 @@ const Question = () => {
                         value={index}
                         style={{ color: "black" }}
                     >
-                        {index}
+                      {index}
                     </button>
                     ))}
-                    
-                    </div>
-                    </div>
+                  </div>
+                </div>
                   
-                    <div className="flex pt-[5vh] items-end justify-end">
-                        <div>
-                        <button
-                            type="button"
-                            className="btn bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]"
-                            style={{ width: 170 }}
-                            onClick={() => router.push("/home-page#course")}
-                            >
-                            Kembali
-                        </button>
-                        <button
-                            type="button"
-                            className="btn bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]'"
-                            style={{ width: 170 }}
-                            onClick={() => handleNext()}
-                            >
-                            {pageQuestion > 9 ? "Selesai" : "Selanjutnya"}
-                        </button>
-                        </div>
+                  <div className="flex pt-[5vh] items-end justify-end">
+                    <div>
+                      <button
+                          type="button"
+                          className="btn bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]"
+                          style={{ width: 170 }}
+                          onClick={() => router.push("/home-page#course")}
+                          >
+                          Kembali
+                      </button>
+                      <button
+                          type="button"
+                          className="btn bg-button_main rounded-3xl border border-white w-[10vw] border-[0.3vw] tablet:px-[2vh] tablet:py-[0.3vw] mobile:px-[3vw] mobile:py-[1vw] mr-[2vw]'"
+                          style={{ width: 170 }}
+                          onClick={() => handleNext()}
+                          >
+                          {pageQuestion > 9 ? "Selesai" : "Selanjutnya"}
+                      </button>
                     </div>
-                        {/* <ButtonIcon onClick={onClick} style="w-[1vw] place-content-end" /> */}
-                    </div>
-                    </div>
-            </div>
+                  </div>
+                </div>
+              </div>
+          </div>
         </section>
     )
 }
